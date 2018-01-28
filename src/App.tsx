@@ -1,12 +1,17 @@
 import * as React from 'react';
-import { Button } from 'antd';
 import './App.css';
 
-class App extends React.Component {
+interface Props {
+    children: React.ReactNode;
+}
+
+class App extends React.Component<Props, {}> {
     render() {
+        const {children} = this.props;
         return (
             <div className="App">
-                <Button type="primary">Button</Button>
+                AppHeader
+                {children}
             </div>
         );
     }
