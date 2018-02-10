@@ -1,19 +1,26 @@
 import * as React from 'react';
+import { Dispatch } from 'redux';
 import { Form, Input, Button, Icon } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { formOptions } from '../config/formConstants';
+import { accountActions } from '../redux/account';
 
 const {create, Item: FormItemWrapper } = Form;
 
 interface LoginComponentProps extends FormComponentProps {
     username: string;
     password: string;
+    dispatch: Dispatch<Object>;
 }
 
 interface Props {
 }
 
 class Login extends React.Component<Props & LoginComponentProps> {
+    componentDidMount() {
+        const { dispatch } = this.props;
+        dispatch(accountActions.account(1));
+    }
     handleSubmit = (evt: React.FormEvent<HTMLFormElement>): void => {
         if (evt) { evt.preventDefault(); }
         const {validateFields} = this.props.form;
