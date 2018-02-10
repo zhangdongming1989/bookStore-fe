@@ -1,0 +1,7 @@
+.AppHeader {
+    display: flex;
+    justify-content: center;
+}
+.AppHeader-Divider {
+    width: 400px;
+}

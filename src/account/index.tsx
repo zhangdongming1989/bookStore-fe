@@ -22,7 +22,7 @@ export default class AccountLayout extends React.Component <Props, {}> {
         const isLoginRoute = pathname.includes('login')
         const isRegisterRoute = pathname.includes('register')
         return (
-            <div className="account-Layout" id="particles-js">
+            <div className={cx('account-Layout', {'account-Layout--register': isRegisterRoute})} id="particles-js">
                 <Card className={cx({'account-LoginCard': isLoginRoute, 'account-RegisterCard': isRegisterRoute})}>
                     <div className="account-CardTitle">
                         {isRegisterRoute && '注册'}
