@@ -1,24 +1,30 @@
 import * as React from 'react';
 import { Card } from 'antd';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import 'particles.js';
 import * as cx from 'classnames';
 import particlesConfig from '../config/particles';
+import { State as AccountState } from '../redux/account';
+import { RootState } from '../redux/storeConfigure';
 
 interface Props {
     children: React.ReactNode;
     location: {
         pathname: string;
     };
+    dispatch: Dispatch<() => {}>;
+    account: AccountState;
 }
 
-export default class AccountLayout extends React.Component <Props, {}> {
+class AccountLayout extends React.Component <Props, {}> {
     componentDidMount() {
         // tslint:disable
         window['particlesJS']('particles-js', particlesConfig)
     }
 
     render() {
-        const {children, location: {pathname}} = this.props;
+        const {children, location: {pathname}, dispatch} = this.props;
         const isLoginRoute = pathname.includes('login')
         const isRegisterRoute = pathname.includes('register')
         return (
@@ -28,9 +34,19 @@ export default class AccountLayout extends React.Component <Props, {}> {
                         {isRegisterRoute && '注册'}
                         {isLoginRoute && '登录'}
                     </div>
-                  {children}
+                    {React.cloneElement(children as React.ReactElement<any>, {
+                        dispatch,
+                    })}
                 </Card>
             </div>
         );
     }
 }
+
+const mapStateToProps = (state: RootState) => {
+    return {
+        account: state.account,
+    };
+};
+
+export default connect(mapStateToProps)(AccountLayout)
