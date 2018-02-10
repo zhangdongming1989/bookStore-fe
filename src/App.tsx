@@ -1,4 +1,5 @@
 import * as React from 'react';
+import AppHeader from './AppHeader';
 import './App.css';
 
 interface Props {
@@ -10,7 +11,7 @@ class App extends React.Component<Props, {}> {
         const {children} = this.props;
         return (
             <div className="App">
-                AppHeader
+                <AppHeader />
                 {children}
             </div>
         );

@@ -8,6 +8,10 @@
     background-color: #80c1ff;
 }
 
+.account-Layout--register {
+    min-height: 1000px;
+}
+
 .account-LoginCard {
     width: 400px;
     position: absolute;
