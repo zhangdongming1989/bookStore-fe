@@ -1,12 +1,9 @@
 import { createAction } from 'typesafe-actions';
 
 export const accountActions = {
-    login: createAction('REQUEST_LOGIN', ( username: string, password: string) => ({
+    account: createAction('REQUEST_LOGIN', ( counter: number ) => ({
         type: 'REQUEST_LOGIN',
-        payload: {
-            username,
-            password,
-        }
+        payload: counter,
     }))
 };
 
