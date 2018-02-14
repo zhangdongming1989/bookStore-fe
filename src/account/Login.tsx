@@ -1,32 +1,59 @@
+/// <reference path="../redux/account/types.d.ts" />
 import * as React from 'react';
 import { Dispatch } from 'redux';
-import { Form, Input, Button, Icon } from 'antd';
+import { InjectedRouter } from 'react-router';
+import { Form, Input, Button, Icon, message } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { formOptions } from '../config/formConstants';
-import { accountActions } from '../redux/account';
+import { requestLogin, clearLoginStatus } from '../redux/account/actions';
+import { Status } from '../redux/account/actions';
+import { MESSAGE_DURATION } from '../constants';
 
 const {create, Item: FormItemWrapper } = Form;
+
+//tslint:disable
 
 interface LoginComponentProps extends FormComponentProps {
     username: string;
     password: string;
     dispatch: Dispatch<Object>;
+    status: StateLoginStatusType;
+    router: InjectedRouter;
 }
 
-interface Props {
-}
+class Login extends React.Component<LoginComponentProps> {
 
-class Login extends React.Component<Props & LoginComponentProps> {
-    componentDidMount() {
-        const { dispatch } = this.props;
-        dispatch(accountActions.account(1));
+    componentWillReceiveProps(nextProps: LoginComponentProps) {
+        const {status: nextStatus} = nextProps;
+        const {status, router, dispatch} = this.props;
+        debugger
+        if(nextStatus && nextStatus.status === Status.ok && status === null) {
+            // 登录成功
+            router.replace('/');
+            dispatch(clearLoginStatus())
+        } else if(nextStatus && nextStatus.status === Status.fail && status === null) {
+            // 登录成功
+            const { message: messageContent } = nextStatus as StateLoginStatusFailType
+            message.error(messageContent, MESSAGE_DURATION / 1000)
+        }
     }
+
+    componentWillUnmount() {
+        const { dispatch } = this.props
+        dispatch(clearLoginStatus())
+    }
+
     handleSubmit = (evt: React.FormEvent<HTMLFormElement>): void => {
         if (evt) { evt.preventDefault(); }
-        const {validateFields} = this.props.form;
+        const {dispatch, form} = this.props;
+        const {validateFields, getFieldsValue} = form;
         // tslint:disable no-console no-debugger
         validateFields((errors) => {
-            console.log(errors);
+            if (errors && Object.keys(errors).length) {
+                return;
+            }
+            const loginInput = getFieldsValue(['username', 'password']) as LoginInputType;
+            dispatch(requestLogin(loginInput));
         });
     }
 

@@ -1,3 +1,5 @@
+/// <reference path="../redux/types.d.ts" />
+/// <reference path="../redux/account/types.d.ts" />
 import * as React from 'react';
 import { Card } from 'antd';
 import { connect } from 'react-redux';
@@ -5,8 +7,7 @@ import { Dispatch } from 'redux';
 import 'particles.js';
 import * as cx from 'classnames';
 import particlesConfig from '../config/particles';
-import { State as AccountState } from '../redux/account';
-import { RootState } from '../redux/storeConfigure';
+import { RootState } from '../redux/types';
 
 interface Props {
     children: React.ReactNode;
@@ -14,7 +15,7 @@ interface Props {
         pathname: string;
     };
     dispatch: Dispatch<() => {}>;
-    account: AccountState;
+    account: StateAccountTypes;
 }
 
 class AccountLayout extends React.Component <Props, {}> {
@@ -24,7 +25,7 @@ class AccountLayout extends React.Component <Props, {}> {
     }
 
     render() {
-        const {children, location: {pathname}, dispatch} = this.props;
+        const {children, location: {pathname}, dispatch, account} = this.props;
         const isLoginRoute = pathname.includes('login')
         const isRegisterRoute = pathname.includes('register')
         return (
@@ -36,6 +37,8 @@ class AccountLayout extends React.Component <Props, {}> {
                     </div>
                     {React.cloneElement(children as React.ReactElement<any>, {
                         dispatch,
+                        ...(isLoginRoute && {status: account.loginStatus}),
+                        // ...(isRegisterRoute && {status: account.loginStatus})
                     })}
                 </Card>
             </div>
