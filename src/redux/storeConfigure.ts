@@ -1,13 +1,9 @@
+/// <reference path="./types.d.ts" />
+
 import { combineReducers } from 'redux';
-import { routerReducer, RouterState } from 'react-router-redux';
-import { accountReducer, State as AccountState } from './account';
-
-interface StoreEnhancerState { }
-
-export interface RootState extends StoreEnhancerState {
-    router: RouterState;
-    account: AccountState;
-}
+import { routerReducer } from 'react-router-redux';
+import { accountReducer } from './account/reducers';
+import { RootState } from './types';
 
 export const rootReducer = combineReducers<RootState>({
     router: routerReducer,
