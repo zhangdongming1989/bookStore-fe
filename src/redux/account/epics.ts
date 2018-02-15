@@ -31,4 +31,15 @@ const loginEpic: Epic<ActionType, StateAccountTypes> = (action$: ActionsObservab
         )
     );
 
-export default combineEpics(loginEpic);
+const profileEpic: Epic<ActionType, StateAccountTypes> = (action$: ActionsObservable<ActionType>) =>
+    action$
+        .ofType(accountActions.PROFILE.REQUEST)
+        .mergeMap(() => ajax.get(
+            `${API_ROOT}/account/query`,
+        )
+            .map((res: AjaxResponse) => {
+                return {type: accountActions.PROFILE.SUCCESS, payload: res.response};
+            })
+        );
+
+export default combineEpics(loginEpic, profileEpic);

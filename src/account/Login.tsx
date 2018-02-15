@@ -26,7 +26,6 @@ class Login extends React.Component<LoginComponentProps> {
     componentWillReceiveProps(nextProps: LoginComponentProps) {
         const {status: nextStatus} = nextProps;
         const {status, router, dispatch} = this.props;
-        debugger
         if(nextStatus && nextStatus.status === Status.ok && status === null) {
             // 登录成功
             router.replace('/');
