@@ -8,7 +8,13 @@ export const accountActions = {
          SUCCESS: 'ACCOUNT_LOGIN_SUCCESS',
          FAIL: 'ACCOUNT_LOGIN_FAIL',
          CLEAR: 'ACCOUNT_LOGIN_CLEAR',
-     }
+     },
+    PROFILE: {
+         REQUEST: 'ACCOUNT_PROFILE_REQUEST',
+         SUCCESS: 'ACCOUNT_PROFILE_SUCCESS',
+         FAIL: 'ACCOUNT_PROFILE_FAIL',
+         CLEAR: 'ACCOUNT_PROFILE_CLEAR',
+    }
 };
 
 export const requestLogin = (payload: LoginInputType): ActionType => {
@@ -21,6 +27,12 @@ export const requestLogin = (payload: LoginInputType): ActionType => {
 export const clearLoginStatus = () => {
     return {
         type: accountActions.LOGIN.CLEAR
+    };
+};
+
+export const requestProfile = () => {
+    return {
+        type: accountActions.PROFILE.REQUEST,
     };
 };
 

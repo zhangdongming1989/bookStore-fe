@@ -5,8 +5,10 @@ import { Provider } from 'react-redux';
 import store from './redux/createStore';
 import routes from './router';
 import registerServiceWorker from './registerServiceWorker';
+// import { API_ROOT } from './constants';
 import './index.css';
-
+// //tslint:disable
+// window.fetch(`${API_ROOT}/account/query`, {credentials: 'include'  })
 ReactDOM.render(
     <Provider store={store}>
         <Router history={browserHistory} routes={routes} />

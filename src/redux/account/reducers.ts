@@ -36,5 +36,12 @@ export const accountReducer = (
             loginStatus: null,
         };
     }
+
+    if (action.type === accountActions.PROFILE.SUCCESS) {
+        return {
+            ...state,
+            currentUser: payload,
+        };
+    }
     return state;
 };

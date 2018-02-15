@@ -14,8 +14,8 @@ export default class BookList extends React.Component {
                 defaultOpenKeys={['sub1']}
                 mode="inline"
             >
+                <Menu.Item key="0"><Link to="/profile/index">个人中心</Link></Menu.Item>
                 <SubMenu key="sub1" title={<span><span>Navigation One</span></span>}>
-                    <Menu.Item key="0"><Link to="/profile/index">个人中心</Link></Menu.Item>
                     <MenuItemGroup key="g1" title="订单中心">
                         <Menu.Item key="1"><Link to="/profile/list">订单列表</Link></Menu.Item>
                         <Menu.Item key="2">退货列表</Menu.Item>
