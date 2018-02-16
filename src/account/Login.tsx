@@ -6,6 +6,7 @@ import { Form, Input, Button, Icon, message } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { formOptions } from '../config/formConstants';
 import { requestLogin, clearLoginStatus } from '../redux/account/actions';
+import { requestProfile } from '../redux/profile/actions';
 import { Status } from '../redux/account/actions';
 import { MESSAGE_DURATION } from '../constants';
 
@@ -30,6 +31,7 @@ class Login extends React.Component<LoginComponentProps> {
             // 登录成功
             router.replace('/');
             dispatch(clearLoginStatus())
+            dispatch(requestProfile())
         } else if(nextStatus && nextStatus.status === Status.fail && status === null) {
             // 登录成功
             const { message: messageContent } = nextStatus as StateLoginStatusFailType

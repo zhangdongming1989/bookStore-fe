@@ -5,10 +5,10 @@ import { ActionsObservable, combineEpics, Epic } from 'redux-observable';
 import { ajax } from 'rxjs/observable/dom/ajax';
 import { accountActions } from './actions';
 import { API_ROOT } from '../../constants';
-import { ActionType } from '../types';
+import { ActionType, EpicType } from '../types';
 
 // tslint:disable no-any
-const loginEpic: Epic<ActionType, StateAccountTypes> = (action$: ActionsObservable<ActionType>) =>
+const loginEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
     action$
         .ofType(accountActions.LOGIN.REQUEST)
         .mergeMap((action: ActionType) => ajax.post(
@@ -31,7 +31,7 @@ const loginEpic: Epic<ActionType, StateAccountTypes> = (action$: ActionsObservab
         )
     );
 
-const profileEpic: Epic<ActionType, StateAccountTypes> = (action$: ActionsObservable<ActionType>) =>
+const profileEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
     action$
         .ofType(accountActions.PROFILE.REQUEST)
         .mergeMap(() => ajax.get(

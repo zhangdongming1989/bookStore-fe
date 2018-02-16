@@ -10,7 +10,6 @@ export default class Profile extends React.Component {
                 <div className="Profile-Menu">
                     <ProfileMenu />
                 </div>
-
                 {children}
             </div>
         );

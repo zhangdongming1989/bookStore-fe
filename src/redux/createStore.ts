@@ -3,7 +3,7 @@ import { applyMiddleware, compose, createStore } from 'redux';
 // import { routerMiddleware } from 'react-router-redux';
 import { createEpicMiddleware } from 'redux-observable';
 import { rootReducer } from './storeConfigure';
-import { RootState } from './types';
+// import { RootState } from './types';
 import rootEpics from './epics';
 
 const composeEnhancers = (
@@ -12,7 +12,7 @@ const composeEnhancers = (
     window && window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__']
 ) || compose;
 
-function configureStore(initialState?: RootState) {
+export function configureStore(initialState?: object) {
     const middleWares = [createEpicMiddleware(rootEpics)];
     const enhancer = composeEnhancers(
         applyMiddleware(...middleWares)
@@ -23,7 +23,3 @@ function configureStore(initialState?: RootState) {
         enhancer,
     );
 }
-
-const store = configureStore();
-
-export default store;

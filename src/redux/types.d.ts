@@ -3,10 +3,13 @@ import { RouterState } from 'react-router-redux';
 
 declare interface ActionType {
     type: string;
-    payload: Object;
+    payload?: Object;
 }
 
 declare interface RootState {
     router: RouterState;
     account: StateAccountTypes;
+    profile: StateProfileTypes;
 }
+
+export type EpicType = StateAccountTypes | StateProfileTypes;

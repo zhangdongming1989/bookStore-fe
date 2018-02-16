@@ -14,7 +14,13 @@ export const accountActions = {
          SUCCESS: 'ACCOUNT_PROFILE_SUCCESS',
          FAIL: 'ACCOUNT_PROFILE_FAIL',
          CLEAR: 'ACCOUNT_PROFILE_CLEAR',
-    }
+    },
+    REGISTER: {
+         REQUEST: 'ACCOUNT_REGISTER_REQUEST',
+         SUCCESS: 'ACCOUNT_REGISTER_SUCCESS',
+         FAIL: 'ACCOUNT_REGISTER_FAIL',
+         CLEAR: 'ACCOUNT_REGISTER_CLEAR',
+    },
 };
 
 export const requestLogin = (payload: LoginInputType): ActionType => {
@@ -30,9 +36,16 @@ export const clearLoginStatus = () => {
     };
 };
 
-export const requestProfile = () => {
+export const requestRegister = (payload: RegisterInputType): ActionType => {
     return {
-        type: accountActions.PROFILE.REQUEST,
+        type: accountActions.REGISTER.REQUEST,
+        payload,
+    };
+};
+
+export const clearRegisterStatus = () => {
+    return {
+        type: accountActions.REGISTER.CLEAR
     };
 };
 
