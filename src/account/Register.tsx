@@ -1,36 +1,33 @@
 import * as React from 'react';
-import { Input, Form, Radio, Button } from 'antd';
+import { InjectedRouter } from 'react-router';
+import { Dispatch } from 'redux';
+import { Input, Form, Radio, Button, message } from 'antd';
+import { omit } from 'lodash';
 import { formOptions } from '../config/formConstants';
 import { FormComponentProps } from 'antd/lib/form';
 import FormItem from 'antd/es/form/FormItem';
 import RadioGroup from 'antd/es/radio/group';
+import {
+    requestRegister,
+    Status,
+    clearRegisterStatus,
+} from '../redux/account/actions';
+import { MESSAGE_DURATION } from '../constants';
 
 const {create} = Form;
-
-interface Props {
-    form: Object;
-}
-
-interface RegisterFormComponentProps extends FormComponentProps {
-    username: string;
-    real_name: string;
-    sex: 'male' | 'female';
-    email: string;
-    password: string;
-    confirm_password: string;
-    password_question: string;
-    password_answer: string;
-    tel_number: string | number;
-    office_tel: string | number;
-    qq: string | number;
-}
 
 const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
 };
 
-class Register extends React.Component<Props & RegisterFormComponentProps> {
+interface ExtraProps {
+    dispatch: Dispatch<Object>;
+    status: StateRegisterStatusType;
+    router: InjectedRouter;
+}
+
+class Register extends React.Component<RegisterInputType & FormComponentProps & ExtraProps> {
     handleValidateConfirmPassword = (rule: object, value: string | number, callback: (message?: string) => {}) => {
         const { form } = this.props;
         if (value && value !== form.getFieldValue('password')) {
@@ -40,15 +37,39 @@ class Register extends React.Component<Props & RegisterFormComponentProps> {
         }
     }
 
+    componentWillReceiveProps(nextProps: RegisterInputType & FormComponentProps & ExtraProps) {
+        const {status: nextStatus} = nextProps;
+        const {status, router, dispatch} = this.props;
+        if ( nextStatus && nextStatus.status === Status.ok && status === null) {
+            // 注册成功
+            window.setTimeout(
+                () => {
+                    router.replace('/account/login');
+                    },
+                MESSAGE_DURATION
+            );
+            message.error('注册成功，三秒后会跳转去登录', MESSAGE_DURATION / 1000);
+            dispatch(clearRegisterStatus());
+        } else if ( nextStatus && nextStatus.status === Status.fail && status === null) {
+            const { message: messageContent } = nextStatus as StateLoginStatusFailType;
+            message.error(messageContent, MESSAGE_DURATION / 1000);
+        }
+    }
+
     handleSubmit = (evt: React.FormEvent<HTMLFormElement>): void => {
         if (evt) {
             evt.preventDefault();
         }
-        const {validateFields} = this.props.form;
+        const { form, dispatch } = this.props;
+        const {validateFields, getFieldsValue} = form;
+        const registerValues = omit(getFieldsValue(), 'confirm_password') as RegisterInputType;
         // tslint:disable no-console no-debugger
         validateFields(
             (errors) => {
-            console.log(errors);
+                if (errors && Object.keys(errors).length > 0) {
+                    return;
+                }
+                dispatch(requestRegister(registerValues));
         });
     }
 
@@ -79,11 +100,30 @@ class Register extends React.Component<Props & RegisterFormComponentProps> {
                   }
                 </FormItem>
                 <FormItem
+                    label="昵称"
+                    {...formItemLayout}
+                >
+                    {
+                        getFieldDecorator('nickname', {
+                            rules: [
+                                formOptions.required,
+                                {
+                                    pattern: /^[\s\S]{6,16}$/,
+                                    message: '长度应为6-16位'
+                                },
+                            ]
+                        })(
+                            <Input
+                                placeholder="请输入6-16位昵称"
+                            />)
+                    }
+                </FormItem>
+                <FormItem
                     label="真实姓名"
                     {...formItemLayout}
                 >
                     {
-                        getFieldDecorator('real_name', {
+                        getFieldDecorator('realname', {
                             rules: [
                                 formOptions.required,
                             ]
@@ -96,7 +136,7 @@ class Register extends React.Component<Props & RegisterFormComponentProps> {
                     {...formItemLayout}
                 >
                     {
-                        getFieldDecorator('sex', {
+                        getFieldDecorator('gender', {
                             initialValue: 'female',
                             rules: [
                                 formOptions.required,
@@ -112,7 +152,7 @@ class Register extends React.Component<Props & RegisterFormComponentProps> {
                     {...formItemLayout}
                 >
                     {
-                        getFieldDecorator('email', {
+                        getFieldDecorator('mail', {
                             rules: [
                                 formOptions.required,
                                 {
@@ -168,7 +208,7 @@ class Register extends React.Component<Props & RegisterFormComponentProps> {
                     {...formItemLayout}
                 >
                     {
-                        getFieldDecorator('password_question', {
+                        getFieldDecorator('pwdquestion', {
                             rules: [
                                 formOptions.required,
                             ]
@@ -181,7 +221,7 @@ class Register extends React.Component<Props & RegisterFormComponentProps> {
                     {...formItemLayout}
                 >
                     {
-                        getFieldDecorator('password_answer', {
+                        getFieldDecorator('pwdanswer', {
                             rules: [
                                 formOptions.required,
                             ]
@@ -194,7 +234,7 @@ class Register extends React.Component<Props & RegisterFormComponentProps> {
                     {...formItemLayout}
                 >
                     {
-                        getFieldDecorator('tel_number', {
+                        getFieldDecorator('phone', {
                             rules: [
                                 formOptions.required,
                                 {
@@ -207,21 +247,15 @@ class Register extends React.Component<Props & RegisterFormComponentProps> {
                     }
                 </FormItem>
                 <FormItem
-                    label="办公电话"
-                    {...formItemLayout}
-                >
-                    {
-                        getFieldDecorator('office_tel')(
-                            <Input type="tel" />
-                        )
-                    }
-                </FormItem>
-                <FormItem
                     label="QQ号"
                     {...formItemLayout}
                 >
                     {
-                        getFieldDecorator('qq')(
+                        getFieldDecorator('qq', {
+                            rules: [
+                                formOptions.required,
+                            ]
+                        })(
                             <Input />
                         )
                     }

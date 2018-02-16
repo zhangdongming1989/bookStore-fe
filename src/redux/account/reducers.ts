@@ -6,7 +6,7 @@ import { accountActions } from './actions';
 
 export const initialState: StateAccountTypes = {
     loginStatus: null,
-    currentUser: null
+    registerStatus: null,
 };
 
 export const accountReducer = (
@@ -41,6 +41,29 @@ export const accountReducer = (
         return {
             ...state,
             currentUser: payload,
+        };
+    }
+
+    if (action.type === accountActions.REGISTER.SUCCESS) {
+        return {
+            ...state,
+            registerStatus: payload,
+        };
+    }
+    if (action.type === accountActions.REGISTER.FAIL) {
+        return {
+            ...state,
+            registerStatus: payload
+        };
+    }
+
+    if (
+        action.type === accountActions.REGISTER.CLEAR ||
+        action.type === accountActions.REGISTER.REQUEST
+    ) {
+        return {
+            ...state,
+            registerStatus: null,
         };
     }
     return state;

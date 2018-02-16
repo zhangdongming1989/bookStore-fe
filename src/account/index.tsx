@@ -8,6 +8,7 @@ import 'particles.js';
 import * as cx from 'classnames';
 import particlesConfig from '../config/particles';
 import { RootState } from '../redux/types';
+import { InjectedRouter } from 'react-router';
 
 interface Props {
     children: React.ReactNode;
@@ -16,9 +17,19 @@ interface Props {
     };
     dispatch: Dispatch<() => {}>;
     account: StateAccountTypes;
+    profile: StateProfileTypes;
+    router: InjectedRouter;
 }
 
 class AccountLayout extends React.Component <Props, {}> {
+
+    componentWillMount() {
+        const { profile, router} = this.props;
+        if (profile.currentUser) {
+            router.replace('/');
+        }
+    }
+
     componentDidMount() {
         // tslint:disable
         window['particlesJS']('particles-js', particlesConfig)
@@ -38,7 +49,7 @@ class AccountLayout extends React.Component <Props, {}> {
                     {React.cloneElement(children as React.ReactElement<any>, {
                         dispatch,
                         ...(isLoginRoute && {status: account.loginStatus}),
-                        // ...(isRegisterRoute && {status: account.loginStatus})
+                        ...(isRegisterRoute && {status: account.registerStatus})
                     })}
                 </Card>
             </div>
@@ -49,6 +60,7 @@ class AccountLayout extends React.Component <Props, {}> {
 const mapStateToProps = (state: RootState) => {
     return {
         account: state.account,
+        profile: state.profile,
     };
 };
 
