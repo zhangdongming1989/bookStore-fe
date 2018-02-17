@@ -7,3 +7,13 @@
 .Profile-Menu {
     width: 256px;
 }
+
+.ProfileAccountInfo-Layout {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.ProfileAccountInfo-Form {
+    width: 400px;
+}
