@@ -6,6 +6,7 @@ import { ActionType, EpicType } from '../types';
 import { profileActions } from './actions';
 import { API_ROOT } from '../../constants';
 
+// tslint:disable
 const currentUserEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
     action$
         .ofType(profileActions.BASIC.REQUEST)
@@ -14,6 +15,16 @@ const currentUserEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<
             )
                 .map((res: AjaxResponse) => {
                     return {type: profileActions.BASIC.SUCCESS, payload: res.response.payload};
+                })
+        );
+const accountInfoEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
+    action$
+        .ofType(profileActions.ACCOUNTINFO.REQUEST)
+        .mergeMap(() => ajax.get(
+            `${API_ROOT}/account/query`,
+            )
+                .map((res: AjaxResponse) => {
+                    return {type: profileActions.ACCOUNTINFO.SUCCESS, payload: res.response.payload};
                 })
         );
 
@@ -28,4 +39,19 @@ const logoutEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<Actio
                 })
         );
 
-export default combineEpics(currentUserEpic, logoutEpic);
+const queryBookList: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
+    action$
+        .ofType(profileActions.BOOKLIST.REQUEST)
+        .mergeMap(() => ajax.get(
+             `${API_ROOT}/order/query`,
+        )
+            .map((res: AjaxResponse) => {
+                return {
+                    type: profileActions.BOOKLIST.SUCCESS,
+                    payload: Object.values(res.response.payload)
+                }
+            })
+        )
+
+
+export default combineEpics(currentUserEpic, logoutEpic, accountInfoEpic, queryBookList);

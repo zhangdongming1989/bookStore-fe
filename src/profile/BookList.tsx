@@ -1,23 +1,17 @@
 import * as React from 'react';
+import { connect, Dispatch } from 'react-redux';
 import { Table } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
+import { RootState } from '../redux/types';
+// import { WrappedFormUtils } from 'antd/lib/form/Form';
+import { requestBookList } from '../redux/profile/actions';
 
-interface DataMeta {
-    id: string;
-    count: string;
-    mark_price: string;
-    real_price: string;
-    time: string;
-    book_status: string;
-    post_status: string;
-    pay_status: string;
-}
-
-const columns: ColumnProps <DataMeta>[] = [
+// tslint:disable
+const columns: ColumnProps <BookItemType>[] = [
     {
-        key: 'id',
+        key: 'order_id',
         title: '订单编号',
-        dataIndex: 'id',
+        dataIndex: 'order_id',
     },
     {
         key: 'count',
@@ -25,14 +19,14 @@ const columns: ColumnProps <DataMeta>[] = [
         dataIndex: 'count',
     },
     {
-        key: 'mark_price',
+        key: 'origin_cost',
         title: '码洋',
-        dataIndex: 'mark_price',
+        dataIndex: 'origin_cost',
     },
     {
-        key: 'real_price',
+        key: 'actual_cost',
         title: '实洋',
-        dataIndex: 'real_price',
+        dataIndex: 'actual_cost',
     },
     {
         key: 'time',
@@ -40,40 +34,46 @@ const columns: ColumnProps <DataMeta>[] = [
         dataIndex: 'time',
     },
     {
-        key: 'book_status',
+        key: 'order_status',
         title: '订单状态',
-        dataIndex: 'book_status',
+        dataIndex: 'order_status',
     },
     {
-        key: 'post_status',
+        key: 'delivery_status',
         title: '发货状态',
-        dataIndex: 'post_status',
+        dataIndex: 'delivery_status',
     },
     {
-        key: 'key: pay_status',
+        key: 'pay_status',
         title: '付款状态',
         dataIndex: 'pay_status',
     },
 ];
 
-export const bookList: DataMeta[] = [
-    {
-        id: '18020241206',
-        count: '16',
-        mark_price: '679',
-        real_price: '400',
-        time: '2018-02-02 10:34:50',
-        book_status: '已下单',
-        post_status: '配送中',
-        pay_status: '已付款',
-    }
-];
+interface BookListProps {
+    bookList: BookListType;
+    dispatch: Dispatch<() => {}>;
+}
 
-export default class BookList extends React.Component {
+const mapStateToProps = (state: RootState) => {
+    return {
+      bookList: state.profile.bookList,
+    };
+};
+
+class BookList extends React.Component<BookListProps, {}> {
+
+    componentDidMount() {
+        const {dispatch} = this.props
+        dispatch(requestBookList())
+    }
+
     render() {
+        const { bookList = [] } = this.props;
         return (
             <div>
                 <Table
+                    rowKey={(bookItem: BookItemType) => bookItem.order_id }
                     dataSource={bookList}
                     columns={columns}
                 />
@@ -81,3 +81,6 @@ export default class BookList extends React.Component {
         );
     }
 }
+
+export default connect(mapStateToProps)(BookList);
+// export default connect(mapStateToProps)(BookList);

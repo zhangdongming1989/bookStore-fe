@@ -29,7 +29,7 @@ class AppHeader extends React.Component<Props, {}> {
                     currentUser ?
                         <SubMenu title={<span>你好，{currentUser.username}</span>}>
                             <MenuItem key="profile">
-                                <Link to="/profile/list">个人中心</Link>
+                                <Link to="/profile/book_list">个人中心</Link>
                             </MenuItem>
                             <MenuItem key="logout">
                                 <div onClick={this.handleLogout}>登出</div>

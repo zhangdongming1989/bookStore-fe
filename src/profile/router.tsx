@@ -1,10 +1,12 @@
 import * as React from 'react';
-import { Route } from 'react-router';
+import { Route, IndexRoute } from 'react-router';
 import Profile from './index';
 import BookList from './BookList';
+import AccountInfo from './AccountInfo';
 
 export default (
     <Route key="profile" path="profile" component={Profile}>
-        <Route key="book_list" path="list" component={BookList} />
+        <IndexRoute component={AccountInfo} />
+        <Route key="list" path="book_list" component={BookList} />
     </Route>
 );

@@ -8,7 +8,15 @@ export const profileActions = {
     LOGOUT: {
         REQUEST: 'PROFILE_LOGOUT_REQUEST',
         SUCCESS: 'PROFILE_LOGOUT_SUCCESS',
-    }
+    },
+    ACCOUNTINFO: {
+        REQUEST: 'PROFILE_ACCOUNTINFO_REQUEST',
+        SUCCESS: 'PROFILE_ACCOUNTINFO_SUCCESS',
+    },
+    BOOKLIST: {
+        REQUEST: 'PROFILE_BOOKLIST_REQUEST',
+        SUCCESS: 'PROFILE_BOOKLIST_SUCCESS',
+    },
 };
 
 export const requestProfile = () => {
@@ -20,5 +28,17 @@ export const requestProfile = () => {
 export const requestLogout = () => {
     return {
         type: profileActions.LOGOUT.REQUEST,
+    };
+};
+
+export const requestAccountInfo = () => {
+    return {
+        type: profileActions.ACCOUNTINFO.REQUEST,
+    };
+};
+
+export const requestBookList = () => {
+    return {
+        type: profileActions.BOOKLIST.REQUEST,
     };
 };

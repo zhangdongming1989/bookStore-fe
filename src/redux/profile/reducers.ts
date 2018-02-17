@@ -1,9 +1,10 @@
 import { profileActions } from './actions';
 
 // tslint:disable no-debugger
-
 export const initialState: StateProfileTypes = {
     currentUser: null,
+    accountInfo: null,
+    bookList: null,
 };
 
 export const profileReducer = (
@@ -25,6 +26,20 @@ export const profileReducer = (
     }
     if (action.type === profileActions.LOGOUT.SUCCESS) {
         return initialState;
+    }
+
+    if (action.type === profileActions.ACCOUNTINFO.SUCCESS) {
+        return {
+            ...state,
+            accountInfo: payload
+        };
+    }
+
+    if (action.type === profileActions.BOOKLIST.SUCCESS) {
+        return {
+            ...state,
+            bookList: payload
+        };
     }
 
     return state;
