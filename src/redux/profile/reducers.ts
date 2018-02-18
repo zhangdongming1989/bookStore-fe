@@ -5,14 +5,15 @@ export const initialState: StateProfileTypes = {
     currentUser: null,
     accountInfo: null,
     bookList: null,
+    bookListDetail: {},
 };
 
 export const profileReducer = (
     state = initialState,
     action: {type: string, payload: Object, [propName: string]: Object}
 ) => {
-    const { payload } = action;
     if (action.type === profileActions.BASIC.SUCCESS) {
+        const { payload } = action;
         return {
             ...state,
             currentUser: payload,
@@ -29,6 +30,7 @@ export const profileReducer = (
     }
 
     if (action.type === profileActions.ACCOUNTINFO.SUCCESS) {
+        const { payload } = action;
         return {
             ...state,
             accountInfo: payload
@@ -36,9 +38,21 @@ export const profileReducer = (
     }
 
     if (action.type === profileActions.BOOKLIST.SUCCESS) {
+        const { payload } = action;
         return {
             ...state,
             bookList: payload
+        };
+    }
+    if ( action.type === profileActions.BOOKLIST_DETAIL.SUCCESS ) {
+        const { payload } = action as BookListDetailActionType;
+        const { orderId, list } = payload;
+        return {
+            ...state,
+            bookListDetail: {
+                ...state.bookListDetail,
+                [orderId]: list
+            }
         };
     }
 

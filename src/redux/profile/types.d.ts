@@ -2,6 +2,7 @@ declare interface StateProfileTypes {
     readonly currentUser: StateCurrentUserType | null;
     readonly accountInfo: StateAccountInfoType | null;
     readonly bookList: BookListType | null;
+    readonly bookListDetail: BookListDetailType | {};
 }
 
 declare interface StateCurrentUserType {
@@ -35,4 +36,28 @@ declare type BookItemType = {
     delivery_status: string,
 };
 
+declare type StateBookItemDetail = {
+    isbn: string,
+    order_quantity: string,
+    book_name: string,
+    origin_price: string,
+    discount: string,
+    warehouse: string,
+    actual_price: string,
+    order_id: string,
+    deliveried_quantity: string
+};
+
 declare type BookListType = BookItemType[];
+declare type BookListDetailType = StateBookItemDetail[];
+declare type StateBookListDetailType = {
+  [propsName: string]: BookListDetailType;
+};
+
+declare type BookListDetailActionType = {
+    type: string;
+    payload: {
+        orderId: string;
+        list: BookListDetailType;
+    }
+};
