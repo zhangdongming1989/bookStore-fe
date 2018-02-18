@@ -42,8 +42,14 @@ const logoutEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<Actio
 const queryBookList: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
     action$
         .ofType(profileActions.BOOKLIST.REQUEST)
-        .mergeMap(() => ajax.get(
+        .mergeMap(() => ajax.post(
              `${API_ROOT}/order/query`,
+            {
+                orderId: 12,
+            },
+            {
+                'Content-Type': 'application/json',
+            }
         )
             .map((res: AjaxResponse) => {
                 return {
@@ -53,5 +59,22 @@ const queryBookList: Epic<ActionType, EpicType> = (action$: ActionsObservable<Ac
             })
         )
 
+const queryBookDetail: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
+    action$.
+        ofType(profileActions.BOOKLIST_DETAIL.REQUEST)
+        .mergeMap((action: ActionType) => ajax.get(
+            `${API_ROOT}/order/detail/${action.payload}`
+            )
+            .map((res) => {
+                return {
+                    type: profileActions.BOOKLIST_DETAIL.SUCCESS,
+                    payload: {
+                        orderId: action.payload,
+                        list: Object.values(res.response.payload)
+                    }
+                }
+            })
+        )
 
-export default combineEpics(currentUserEpic, logoutEpic, accountInfoEpic, queryBookList);
+
+export default combineEpics(currentUserEpic, logoutEpic, accountInfoEpic, queryBookList, queryBookDetail);

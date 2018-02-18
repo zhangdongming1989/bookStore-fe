@@ -17,6 +17,10 @@ export const profileActions = {
         REQUEST: 'PROFILE_BOOKLIST_REQUEST',
         SUCCESS: 'PROFILE_BOOKLIST_SUCCESS',
     },
+    BOOKLIST_DETAIL: {
+        REQUEST: 'PROFILE_BOOKLIST_DETAIL_REQUEST',
+        SUCCESS: 'PROFILE_BOOKLIST_DETAIL_SUCCSS',
+    }
 };
 
 export const requestProfile = () => {
@@ -40,5 +44,12 @@ export const requestAccountInfo = () => {
 export const requestBookList = () => {
     return {
         type: profileActions.BOOKLIST.REQUEST,
+    };
+};
+
+export const requestBookListDetail = (orderId: string) => {
+    return {
+        type: profileActions.BOOKLIST_DETAIL.REQUEST,
+        payload: orderId,
     };
 };
