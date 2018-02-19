@@ -1,6 +1,7 @@
 declare interface StateProfileTypes {
     readonly currentUser: StateCurrentUserType | null;
     readonly accountInfo: StateAccountInfoType | null;
+    readonly accountInfoLog: StateAccountInfoLogType[] | null;
     readonly bookList: BookListType | null;
     readonly bookListDetail: BookListDetailType | {};
 }
@@ -61,3 +62,20 @@ declare type BookListDetailActionType = {
         list: BookListDetailType;
     }
 };
+
+declare type StateAccountInfoLogType = {
+    created_at: string,
+    current_balance: string,
+    amount: string,
+    type: string,
+};
+
+declare interface AccountInfoPayloadType {
+    accountInfo: StateAccountInfoType;
+    accountInfoLog: StateAccountInfoLogType[];
+}
+
+declare interface ItemProps {
+    key: string;
+    value: string;
+}

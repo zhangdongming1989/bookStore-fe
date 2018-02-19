@@ -4,6 +4,7 @@ import { profileActions } from './actions';
 export const initialState: StateProfileTypes = {
     currentUser: null,
     accountInfo: null,
+    accountInfoLog: null,
     bookList: null,
     bookListDetail: {},
 };
@@ -30,10 +31,11 @@ export const profileReducer = (
     }
 
     if (action.type === profileActions.ACCOUNTINFO.SUCCESS) {
-        const { payload } = action;
+        const { accountInfo, accountInfoLog } = action.payload as AccountInfoPayloadType;
         return {
             ...state,
-            accountInfo: payload
+            accountInfo,
+            accountInfoLog,
         };
     }
 

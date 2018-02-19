@@ -9,11 +9,6 @@ interface CurrentUserProps {
     dispatch: Dispatch<() => {}>;
 }
 
-interface ItemProps {
-    key: string;
-    value: string;
-}
-
 const currentUserMap = {
     username: '用户名',
     nickname: '昵称',
