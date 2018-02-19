@@ -7,8 +7,8 @@ import CurrentUser from './CurrentUser';
 
 export default (
     <Route key="profile" path="profile" component={Profile}>
-        <IndexRoute component={CurrentUser} />
+        <IndexRoute component={AccountInfo} />
         <Route key="list" path="book_list" component={BookList} />
-        <Route key="account_info" path="account_info" component={AccountInfo} />
+        <Route key="user_info" path="user_info" component={CurrentUser} />
     </Route>
 );
