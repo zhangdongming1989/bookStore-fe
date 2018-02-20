@@ -104,5 +104,59 @@ const queryBookDetail: Epic<ActionType, EpicType> = (action$: ActionsObservable<
             })
         )
 
+const queryAddress: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
+    action$.
+        ofType(profileActions.ADDRESS.REQUEST)
+        .mergeMap(() => ajax.get(
+            `${API_ROOT}/address/query`
+        ))
+        .map(res => {
+            return {
+                type: profileActions.ADDRESS.SUCCESS,
+                payload: res.response.payload
+            }
+        })
 
-export default combineEpics(currentUserEpic, logoutEpic, accountInfoEpic, queryBookList, queryBookDetail);
+const addAddress: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
+    action$.
+         ofType(profileActions.ADD_ADDRESS.REQUEST)
+        .mergeMap((action: ActionType) =>
+            ajax.post(
+                `${API_ROOT}/address/add`,
+                action.payload,
+                {'Content-Type': 'application/json'}
+                )
+        )
+        .mapTo({type: profileActions.ADDRESS.REQUEST});
+
+const deleteAddress: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
+    action$.
+    ofType(profileActions.DELETE_ADDRESS.REQUEST)
+        .mergeMap((action: ActionType) =>
+            ajax.get(
+                `${API_ROOT}/address/remove/${action.payload}`,
+            )
+        )
+        .mapTo({type: profileActions.ADDRESS.REQUEST});
+
+const setDefaultAddress: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
+    action$.
+    ofType(profileActions.SETDEFAULT_ADDRESS.REQUEST)
+        .mergeMap((action: ActionType) =>
+            ajax.get(
+                `${API_ROOT}/address/setdefault/${action.payload}`,
+            )
+        )
+        .mapTo({type: profileActions.ADDRESS.REQUEST});
+
+export default combineEpics(
+    currentUserEpic,
+    logoutEpic,
+    accountInfoEpic,
+    queryBookList,
+    queryBookDetail,
+    queryAddress,
+    addAddress,
+    deleteAddress,
+    setDefaultAddress,
+);

@@ -66,7 +66,7 @@ class BookListDetailModal extends React.Component<BookListDetailModalProps, {}> 
         return (
             <Modal
                 visible={visible}
-                footer={() => null}
+                footer={null}
                 onCancel={onClose}
                 title={`订单 ${order_id} 的书目`}
                 width={800}

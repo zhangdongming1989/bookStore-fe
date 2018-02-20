@@ -1,4 +1,5 @@
 import { profileActions } from './actions';
+import { message } from 'antd';
 
 // tslint:disable no-debugger
 export const initialState: StateProfileTypes = {
@@ -7,6 +8,7 @@ export const initialState: StateProfileTypes = {
     accountInfoLog: null,
     bookList: null,
     bookListDetail: {},
+    address: null,
 };
 
 export const profileReducer = (
@@ -46,6 +48,7 @@ export const profileReducer = (
             bookList: payload
         };
     }
+
     if ( action.type === profileActions.BOOKLIST_DETAIL.SUCCESS ) {
         const { payload } = action as BookListDetailActionType;
         const { orderId, list } = payload;
@@ -55,6 +58,27 @@ export const profileReducer = (
                 ...state.bookListDetail,
                 [orderId]: list
             }
+        };
+    }
+
+    if (action.type === profileActions.ADDRESS.SUCCESS) {
+        const { payload } = action;
+        return {
+            ...state,
+            address: payload,
+        };
+    }
+
+    if (action.type === profileActions.ADD_ADDRESS.SUCCESS) {
+        const {payload} = action;
+        message.success('添加地址成功！');
+        return {
+            ...state,
+            address: [
+                ...(state.address || []),
+                payload,
+            ]
+
         };
     }
 
