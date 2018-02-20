@@ -24,3 +24,17 @@
     margin: 40px auto;
 }
 
+.ProfileAddress-Add {
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px 0;
+}
+
+.ProfileAddress-Wrapper {
+    margin: 20px auto;
+}
+
+.ProfileAddress-AddModalFormItem {
+    display: flex;
+}
+

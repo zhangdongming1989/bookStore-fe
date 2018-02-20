@@ -4,6 +4,7 @@ declare interface StateProfileTypes {
     readonly accountInfoLog: StateAccountInfoLogType[] | null;
     readonly bookList: BookListType | null;
     readonly bookListDetail: BookListDetailType | {};
+    readonly address: StateAddressType[] | null;
 }
 
 declare interface StateCurrentUserType {
@@ -79,3 +80,20 @@ declare interface ItemProps {
     key: string;
     value: string;
 }
+
+declare type StateAddressType = {
+    id: string;
+    user_id: string;
+    name: string;
+    address: string;
+    post_code: string;
+    phone: string;
+    is_default: string;
+};
+
+declare type StateAddAddressType = {
+    name: string;
+    address: string;
+    post_code: string;
+    phone: string;
+};
