@@ -7,6 +7,7 @@ interface Props {
 }
 
 class App extends React.Component<Props, {}> {
+
     render() {
         const {children} = this.props;
         return (

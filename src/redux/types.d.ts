@@ -11,6 +11,7 @@ declare interface RootState {
     account: StateAccountTypes;
     profile: StateProfileTypes;
     search: StateSearchTypes;
+    cart: StateCartTypes;
 }
 
-export type EpicType = StateAccountTypes | StateProfileTypes;
+export type EpicType = StateAccountTypes | StateProfileTypes | RootState;
