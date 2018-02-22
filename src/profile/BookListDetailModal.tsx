@@ -13,7 +13,7 @@ interface BookListDetailModalProps {
     details: BookListDetailType;
 }
 
-const columns:ColumnProps <BookListDetailType>[] = [
+const columns:ColumnProps <StateBookItemDetail>[] = [
     {
         key: 'warehouse',
         title: '库区',
