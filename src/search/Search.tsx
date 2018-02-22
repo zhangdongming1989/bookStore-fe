@@ -12,6 +12,8 @@ import { Location } from 'history';
 import { RootState } from '../redux/types';
 const coverImg = require('../img/default_cover.png');
 import './index.css';
+// import { updateCart } from '../redux/cart/actions';
+// import handleRequestLogin from '../utils/handleRequestLogin';
 
 // const IconText = ({ type, text }) => (
 //     <span>
@@ -25,6 +27,7 @@ interface SearchProps {
     dispatch: Dispatch<() => {}>;
     location: Location;
     dataList: StateSearchResultListType;
+    currentUser: StateCurrentUserType;
 }
 
 class Search extends React.Component<SearchProps> {
@@ -33,6 +36,17 @@ class Search extends React.Component<SearchProps> {
         const {t = 'name', q} = location.query
         dispatch(requestSearch(t, q));
     }
+
+    handleBuy = (item: StateSearchResultType) => {
+      // const { currentUser, dispatch } = this.props;
+      // const { id } = item;
+      // if(!currentUser) {
+      //     handleRequestLogin();
+      // // } else {
+      // //     dispatch(updateCart({book_id: id, action: 'add', quantity: 1}))
+      // // }
+    }
+
     render() {
         const { dataList, location } = this.props;
         const {q} = location.query
@@ -74,6 +88,7 @@ class Search extends React.Component<SearchProps> {
                                         <Button
                                             type={quantity ? 'primary' : 'danger'}
                                             disabled={!canBuy}
+                                            onClick={() => this.handleBuy(item)}
                                         >
                                             {canBuy ? '加入购物车' : '暂时缺货'}
                                         </Button>
@@ -95,7 +110,8 @@ class Search extends React.Component<SearchProps> {
 
 const mapStateToProps = (state: RootState) => {
     return {
-        dataList: state.search.dataList
+        dataList: state.search.dataList,
+        currentUser: state.profile.currentUser
     }
 }
 

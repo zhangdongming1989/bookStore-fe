@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 import { Menu } from 'antd';
 import MenuItem from 'antd/lib/menu/MenuItem';
 import { requestLogout } from '../redux/profile/actions';
+import { requestCart } from '../redux/cart/actions';
 import SearchBar from '../components/SearchBar';
 import './index.css';
 import { RootState } from '../redux/types';
@@ -14,9 +15,17 @@ const SubMenu = Menu.SubMenu;
 interface Props {
     currentUser: StateCurrentUserType;
     dispatch: Dispatch<() => {}>;
+    cart: StateCartType[];
 }
 
 class AppHeader extends React.Component<Props, {}> {
+    componentDidMount() {
+        const { dispatch, currentUser} = this.props;
+        if (currentUser) {
+            dispatch(requestCart());
+        }
+    }
+
     handleLogout = () => {
         const { dispatch } = this.props;
         dispatch(requestLogout());
@@ -47,6 +56,13 @@ class AppHeader extends React.Component<Props, {}> {
                                   </MenuItem>
                               ]
                       }
+                      {
+                          currentUser &&
+                          <MenuItem>
+                              <Link to="cart" >购物车</Link>
+                          </MenuItem>
+                      }
+
                   </Menu>
                   <SearchBar />
                   <Link to="/">首页</Link>
@@ -58,7 +74,8 @@ class AppHeader extends React.Component<Props, {}> {
 
 const mapStateToProps = (state: RootState) => {
     return {
-        currentUser: state.profile.currentUser
+        currentUser: state.profile.currentUser,
+        cart: state.cart.cart
     };
 };
 
