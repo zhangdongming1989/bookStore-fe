@@ -1,7 +1,23 @@
+.AppHeader-Wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid #e8e8e8;
+}
+.AppHeader-WrapperContent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 1000px;
+}
 .AppHeader {
     display: flex;
     justify-content: center;
 }
 .AppHeader-Divider {
-    width: 400px;
+    width: 100px;
+}
+.AppHeader-SearchBar {
+    width: 300px !important;
+    margin-left: -40px !important;
 }

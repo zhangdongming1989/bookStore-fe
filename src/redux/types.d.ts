@@ -10,6 +10,7 @@ declare interface RootState {
     router: RouterState;
     account: StateAccountTypes;
     profile: StateProfileTypes;
+    search: StateSearchTypes;
 }
 
 export type EpicType = StateAccountTypes | StateProfileTypes;
