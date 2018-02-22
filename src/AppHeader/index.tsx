@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 import { Menu } from 'antd';
 import MenuItem from 'antd/lib/menu/MenuItem';
 import { requestLogout } from '../redux/profile/actions';
+import SearchBar from '../components/SearchBar';
 import './index.css';
 import { RootState } from '../redux/types';
 
@@ -22,33 +23,35 @@ class AppHeader extends React.Component<Props, {}> {
     }
 
     render() {
-        const { currentUser} = this.props;
+        const { currentUser } = this.props;
         return (
-            <Menu mode="horizontal" className="AppHeader">
-                {
-                    currentUser ?
-                        <SubMenu title={<span>你好，{currentUser.username}</span>}>
-                            <MenuItem key="profile">
-                                <Link to="/profile/book_list">个人中心</Link>
-                            </MenuItem>
-                            <MenuItem key="logout">
-                                <div onClick={this.handleLogout}>登出</div>
-                            </MenuItem>
-                        </SubMenu> :
-                    [
-                        <MenuItem key="register">
-                            <Link to="/account/register">注册</Link>
-                        </MenuItem>,
-                        <MenuItem key="login">
-                            <Link to="/account/login">登录</Link>
-                        </MenuItem>
-                    ]
-                }
-                <div className="AppHeader-Divider" />
-                <MenuItem>
-                    <Link to="/">首页</Link>
-                </MenuItem>
-            </Menu>
+            <div className="AppHeader-Wrapper">
+              <div className="AppHeader-WrapperContent">
+                  <Menu mode="horizontal" className="AppHeader">
+                      {
+                          currentUser ?
+                              <SubMenu title={<span>你好，{currentUser.username}</span>}>
+                                  <MenuItem key="profile">
+                                      <Link to="/profile/book_list">个人中心</Link>
+                                  </MenuItem>
+                                  <MenuItem key="logout">
+                                      <div onClick={this.handleLogout}>登出</div>
+                                  </MenuItem>
+                              </SubMenu> :
+                              [
+                                  <MenuItem key="register">
+                                      <Link to="/account/register">注册</Link>
+                                  </MenuItem>,
+                                  <MenuItem key="login">
+                                      <Link to="/account/login">登录</Link>
+                                  </MenuItem>
+                              ]
+                      }
+                  </Menu>
+                  <SearchBar />
+                  <Link to="/">首页</Link>
+              </div>
+            </div>
         );
     }
 }
