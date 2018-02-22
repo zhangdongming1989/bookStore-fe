@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
+import { parse } from 'qs';
 import {
     List,
     // Icon,
@@ -8,7 +9,6 @@ import {
     Alert,
 } from 'antd';
 import { requestSearch } from '../redux/search/actions';
-import { Location } from 'history';
 import { RootState } from '../redux/types';
 const coverImg = require('../img/default_cover.png');
 import './index.css';
@@ -25,15 +25,14 @@ import './index.css';
 //tslint:disable
 interface SearchProps {
     dispatch: Dispatch<() => {}>;
-    location: Location;
     dataList: StateSearchResultListType;
     currentUser: StateCurrentUserType;
 }
 
 class Search extends React.Component<SearchProps> {
     componentDidMount() {
-        const {dispatch, location} = this.props;
-        const {t = 'name', q} = location.query
+        const { dispatch } = this.props;
+        const {t = 'name', q} = parse(location.search.slice(1))
         dispatch(requestSearch(t, q));
     }
 
@@ -48,8 +47,8 @@ class Search extends React.Component<SearchProps> {
     }
 
     render() {
-        const { dataList, location } = this.props;
-        const {q} = location.query
+        const { dataList } = this.props;
+        const {q} = parse(location.search.slice(1))
         const pagination = {
             pageSize: 10,
             current: 1,

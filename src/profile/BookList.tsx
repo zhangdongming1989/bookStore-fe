@@ -47,7 +47,7 @@ class BookList extends React.Component<BookListProps, {}> {
     render() {
         const { bookList = [] } = this.props;
         const {selectedRecord, detailModalVisible} = this.state
-        const columns:ColumnProps <BookItemType>[] = [
+        const columns: ColumnProps<BookItemType>[] = [
             {
                 key: 'order_id',
                 title: '订单编号',

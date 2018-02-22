@@ -28,14 +28,15 @@ declare interface StateAccountInfoType {
 }
 
 declare type BookItemType = {
-    user_id: string,
+    user_id?: string,
     order_id: string,
-    quantity: string,
+    quantity?: string,
     origin_cost: string,
     pay_status: string,
     order_status: string,
     actual_cost: string,
     delivery_status: string,
+    time: string;
 };
 
 declare type StateBookItemDetail = {
@@ -51,6 +52,10 @@ declare type StateBookItemDetail = {
 };
 
 declare type BookListType = BookItemType[];
+declare type StateBookListItemType = {
+    [propsName: string]: BookListType;
+};
+
 declare type BookListDetailType = StateBookItemDetail[];
 declare type StateBookListDetailType = {
   [propsName: string]: BookListDetailType;
