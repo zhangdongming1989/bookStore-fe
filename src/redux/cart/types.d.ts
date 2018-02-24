@@ -3,13 +3,14 @@ declare interface StateCartType {
     user_id: string;
     book_id: string;
     id: string;
-    origin_price: string;
+    origin_price: number;
     supplier: string;
-    total_price: string;
+    total_price: number;
     isbn: string;
     book_name: string;
-    actual_price: string;
-    order_quantity: string;
+    actual_price: number;
+    quantity: number;
+    order_quantity: number;
 
 }
 // add 带添加的数量， update 更新后的数量 delete 整条删掉
@@ -22,4 +23,8 @@ declare interface UpdateBookActionType {
 
 declare interface StateCartTypes {
     cart: StateCartType[];
+}
+
+declare interface ActionCreateCartType {
+
 }

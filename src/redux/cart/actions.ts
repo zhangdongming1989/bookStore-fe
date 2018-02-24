@@ -16,10 +16,20 @@ export const cartActions = {
         SUCCESS: 'CART_UPDATE_SUCCESS',
         FAIL: 'CART_UPDATE_FAIL',
     },
+    ACTIONUPDATE: {
+        REQUEST: 'CART_ACTIONUPDATE_REQUEST',
+        SUCCESS: 'CART_ACTIONUPDATE_SUCCESS',
+        FAIL: 'CART_ACTIONUPDATE_FAIL',
+    },
     DELETE: {
         REQUEST: 'CART_DELETE_REQUEST',
         SUCCESS: 'CART_DELETE_SUCCESS',
         FAIL: 'CART_DELETE_FAIL',
+    },
+    ORDERCREATE: {
+        REQUEST: 'CART_CREATEORDER_REQUEST',
+        SUCCESS: 'CART_CREATEORDER_SUCEESS',
+        FAIL: 'CART_CREATEORDER_FAIL',
     }
 };
 
@@ -29,9 +39,16 @@ export const requestCart = () => {
     };
 };
 
-export const updateCart = (bookInfo: UpdateBookActionType) => {
+export const actionUpdateCart = (bookInfo: UpdateBookActionType) => {
     return {
-        type: cartActions.UPDATE.REQUEST,
+        type: cartActions.ACTIONUPDATE.REQUEST,
         payload: bookInfo,
+    };
+};
+
+export const requestCreateOrder = (addressId: number) => {
+    return {
+        type: cartActions.ORDERCREATE.REQUEST,
+        payload: addressId,
     };
 };
