@@ -12,8 +12,8 @@ import { requestSearch } from '../redux/search/actions';
 import { RootState } from '../redux/types';
 const coverImg = require('../img/default_cover.png');
 import './index.css';
-// import { updateCart } from '../redux/cart/actions';
-// import handleRequestLogin from '../utils/handleRequestLogin';
+import { actionUpdateCart } from '../redux/cart/actions';
+import handleRequestLogin from '../utils/handleRequestLogin';
 
 // const IconText = ({ type, text }) => (
 //     <span>
@@ -37,13 +37,13 @@ class Search extends React.Component<SearchProps> {
     }
 
     handleBuy = (item: StateSearchResultType) => {
-      // const { currentUser, dispatch } = this.props;
-      // const { id } = item;
-      // if(!currentUser) {
-      //     handleRequestLogin();
-      // // } else {
-      // //     dispatch(updateCart({book_id: id, action: 'add', quantity: 1}))
-      // // }
+      const { currentUser, dispatch } = this.props;
+      const { id } = item;
+      if(!currentUser) {
+          handleRequestLogin();
+      } else {
+          dispatch(actionUpdateCart({book_id: id, action: 'add', quantity: 1, cart_id: id}))
+      }
     }
 
     render() {

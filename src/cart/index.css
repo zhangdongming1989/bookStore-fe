@@ -1,0 +1,17 @@
+.Cart-AddressSelect {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Cart-AddressOrderWrapper {
+    margin: 20px auto;
+    max-width: 400px;
+}
+.Cart-AddressOrderContent {
+    display: flex;
+    height: 100px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
