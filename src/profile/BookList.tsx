@@ -72,16 +72,28 @@ class BookList extends React.Component<BookListProps, {}> {
                 key: 'order_status',
                 title: '订单状态',
                 dataIndex: 'order_status',
+                render: (_, item: BookItemType) => {
+                    const typeMap = {0: '已下单', 1: '正常',2: '退单'}
+                    return typeMap[item.order_status] || '未知';
+                }
             },
             {
                 key: 'delivery_status',
                 title: '发货状态',
                 dataIndex: 'delivery_status',
+                render: (_, item: BookItemType) => {
+                    const typeMap = {0: '未发货', 1: '已发货'}
+                    return typeMap[item.delivery_status] || '未知';
+                }
             },
             {
                 key: 'pay_status',
                 title: '付款状态',
                 dataIndex: 'pay_status',
+                render: (_, item: BookItemType) => {
+                    const typeMap = {0: '未付款', 1: '已付款'}
+                    return typeMap[item.pay_status] || '未知';
+                }
             },
             {
                 key: 'operator',
