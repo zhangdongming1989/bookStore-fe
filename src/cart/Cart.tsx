@@ -2,10 +2,10 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { InjectedRouter } from 'react-router';
 import { RootState } from '../redux/types';
-import { Table, InputNumber, Button, Select, Card } from 'antd';
+import { Table, InputNumber, Button, Select, Card, message } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
 import { actionUpdateCart, requestCreateOrder } from '../redux/cart/actions';
-import { requestAddress } from '../redux/profile/actions';
+import { requestAccountInfo, requestAddress } from '../redux/profile/actions';
 import './index.css';
 const Option = Select.Option;
 
@@ -15,7 +15,14 @@ interface CartProps {
     dispatch: Dispatch<() => {}>;
     addresses: StateAddressType[];
     currentUser: StateCurrentUserType;
-    router: InjectedRouter
+    router: InjectedRouter;
+    accountInfo: StateAccountInfoType;
+}
+
+interface PriceInfo {
+    origin_price: number;
+    actual_price: number;
+    order_quantity: number;
 }
 
 class Cart extends React.Component<CartProps> {
@@ -29,6 +36,7 @@ class Cart extends React.Component<CartProps> {
         if(!currentUser) return;
         this.checkIfNeedRedirect()
         dispatch(requestAddress());
+        dispatch(requestAccountInfo())
         this.selectAllBook();
     }
 
@@ -75,10 +83,14 @@ class Cart extends React.Component<CartProps> {
         dispatch(actionUpdateCart({book_id: item.book_id, action: 'delete', cart_id: item.id}))
     }
 
-    handleCreateOrder = () => {
+    handleCreateOrder = (priceInfo: PriceInfo) => {
         const {selectedAddress} = this.state;
-        const {dispatch} = this.props;
-        dispatch(requestCreateOrder(selectedAddress))
+        const {dispatch, accountInfo} = this.props;
+        if(Number(accountInfo.balance) < priceInfo.actual_price) {
+            message.error('余额不足，请先充值')
+        } else {
+            dispatch(requestCreateOrder(selectedAddress))
+        }
 
     }
 
@@ -156,7 +168,7 @@ class Cart extends React.Component<CartProps> {
             selectedRowKeys,
             onChange: this.onSelectChange,
         };
-        const priceInfo = selectedRowKeys.reduce((prev : {origin_price: number, actual_price: number, order_quantity: number}, rowKey: number) => {
+        const priceInfo = selectedRowKeys.reduce((prev : PriceInfo, rowKey: number) => {
             const curData = cartData.find((cart: StateCartType) => cart.id.toString() === rowKey.toString());
             if(!curData) return prev;
             return {
@@ -203,7 +215,7 @@ class Cart extends React.Component<CartProps> {
                         <Button
                             type="primary"
                             disabled={ Number(selectedAddress) < 0 || priceInfo.order_quantity ===0 }
-                            onClick={this.handleCreateOrder}
+                            onClick={() => this.handleCreateOrder(priceInfo)}
                         >
                             确认下单
                         </Button>
@@ -218,7 +230,8 @@ const mapStateProps = (state: RootState) => {
     return {
       cartData: state.cart.cart,
       addresses: state.profile.address,
-      currentUser: state.profile.currentUser
+      currentUser: state.profile.currentUser,
+      accountInfo: state.profile.accountInfo,
     };
 };
 
