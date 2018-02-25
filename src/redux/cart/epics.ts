@@ -31,6 +31,7 @@ const addCartEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<Acti
             })
             .map((res: AjaxResponse) => {
                 if(res.status === 200) {
+                    message.success('添加到购物车成功！')
                     return {type: cartActions.GET.REQUEST};
                 }
                 return {
@@ -128,15 +129,22 @@ const createOrderEpic:Epic<ActionType, EpicType> = (action$: ActionsObservable<A
                 'Content-Type': 'application/json',
             })
             .map((res: AjaxResponse) => {
-                if(res.status === 200 && res.response.payload.code === 1) {
+                if(res.status === 200 && res.response.status === 'ok') {
                     message.success('下单成功！')
-                   return {
-                        type: cartActions.GET.REQUEST,
+                     setTimeout(() => {
+                            location.href= '/';
+                            return {
+                                type: cartActions.GET.REQUEST,
+                            }
+                    }, 2000)
+                    return {
+                        type: '',
                     }
-                }
-                message.error('下单失败！')
-                return {
-                    type: cartActions.ORDERCREATE.FAIL,
+                } else {
+                    message.error('下单失败！')
+                    return {
+                        type: cartActions.ORDERCREATE.FAIL,
+                    }
                 }
             })
         );

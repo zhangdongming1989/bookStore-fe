@@ -69,7 +69,7 @@ export default class BookList extends React.Component<MenuProps, {}> {
                     <Menu.Item key="book_list"><Link to="/profile/book_list">订单列表</Link></Menu.Item>
                 </MenuItemGroup>
                 <MenuItemGroup key="account_center" title={<span>账户中心</span>}>
-                    <Menu.Item key="my_bank">我的银行</Menu.Item>
+                    {/*<Menu.Item key="my_bank">我的银行</Menu.Item>*/}
                     <Menu.Item key="user_info"><Link to="/profile/user_info">账户信息</Link></Menu.Item>
                     <Menu.Item key="address"><Link to="/profile/address">地址管理</Link></Menu.Item>
                 </MenuItemGroup>
