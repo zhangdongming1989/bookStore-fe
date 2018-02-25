@@ -27,6 +27,7 @@ interface ExtraProps {
     router: InjectedRouter;
 }
 
+//tslint:disable
 class Register extends React.Component<RegisterInputType & FormComponentProps & ExtraProps> {
     handleValidateConfirmPassword = (rule: object, value: string | number, callback: (message?: string) => {}) => {
         const { form } = this.props;
@@ -48,7 +49,7 @@ class Register extends React.Component<RegisterInputType & FormComponentProps & 
                     },
                 MESSAGE_DURATION
             );
-            message.error('注册成功，三秒后会跳转去登录', MESSAGE_DURATION / 1000);
+            message.success('注册成功，三秒后会跳转去登录', MESSAGE_DURATION / 1000);
             dispatch(clearRegisterStatus());
         } else if ( nextStatus && nextStatus.status === Status.fail && status === null) {
             const { message: messageContent } = nextStatus as StateLoginStatusFailType;
