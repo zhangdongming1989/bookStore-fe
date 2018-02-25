@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { InjectedRouter } from 'react-router';
 import { RootState } from '../redux/types';
-import { Table, InputNumber, Button, Select, Card, message } from 'antd';
+import { Table, InputNumber, Button, Select, Card, message, Alert } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
 import { actionUpdateCart, requestCreateOrder } from '../redux/cart/actions';
 import { requestAccountInfo, requestAddress } from '../redux/profile/actions';
@@ -192,20 +192,23 @@ class Cart extends React.Component<CartProps> {
                 />
                 <div className="Cart-AddressSelect">
                     <h3 style={{marginRight: 20}}>收货地址:</h3>
-                    <Select
-                        style={{width: 400}}
-                        value={(selectedAddress || '').toString()}
-                        onChange={(val) => this.setState({selectedAddress: val})}
-                    >
-                        {
-                            (addresses || []).map((addressInfo: StateAddressType) => {
-                                const {id, name, address, phone} = addressInfo
-                                return (
-                                    <Option value={id.toString()}>{name}, {address}, {phone}</Option>
-                                )
-                            })
-                        }
-                    </Select>
+                    {addresses && addresses.length ?
+                        <Select
+                            style={{width: 400}}
+                            value={selectedAddress.toString()}
+                            onChange={(val) => this.setState({selectedAddress: val})}
+                        >
+                            {
+                                addresses.map((addressInfo: StateAddressType) => {
+                                    const {id, name, address, phone} = addressInfo
+                                    return (
+                                        <Option value={id.toString()}>{name}, {address}, {phone}</Option>
+                                    )
+                                })
+                            }
+                        </Select> :
+                        <Alert type="error" message="您还没有可用的收货地址，请先去添加一个" />
+                    }
                 </div>
                 <Card
                     className="Cart-AddressOrderWrapper"
@@ -229,7 +232,7 @@ class Cart extends React.Component<CartProps> {
 const mapStateProps = (state: RootState) => {
     return {
       cartData: state.cart.cart,
-      addresses: state.profile.address,
+      addresses: state.profile.address || [],
       currentUser: state.profile.currentUser,
       accountInfo: state.profile.accountInfo,
     };
