@@ -65,10 +65,7 @@ class AppHeader extends React.Component<Props, {}> {
                       }
 
                   </Menu>
-                  {
-                    location.pathname !== '/' && <SearchBar />
-                  }
-
+                  <SearchBar />
                   <Link to="/">首页</Link>
               </div>
             </div>
