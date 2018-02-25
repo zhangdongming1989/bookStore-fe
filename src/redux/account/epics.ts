@@ -31,6 +31,29 @@ const loginEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<Action
         )
     );
 
+const registerEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
+    action$
+        .ofType(accountActions.REGISTER.REQUEST)
+        .mergeMap((action: ActionType) => ajax.post(
+            `${API_ROOT}/register`,
+            {
+                ...action.payload,
+            },
+            {
+                'Content-Type': 'application/json',
+            })
+            .map((res: AjaxResponse) => {
+                return {type: accountActions.REGISTER.SUCCESS, payload: res.response};
+            })
+            .catch((err: AjaxError) =>
+                Observable.of({
+                    type: accountActions.REGISTER.FAIL,
+                    payload: err.xhr.response,
+                    error: true
+                })
+            )
+        );
+
 const profileEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
     action$
         .ofType(accountActions.PROFILE.REQUEST)
@@ -42,4 +65,4 @@ const profileEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<Acti
             })
         );
 
-export default combineEpics(loginEpic, profileEpic);
+export default combineEpics(loginEpic, profileEpic, registerEpic);

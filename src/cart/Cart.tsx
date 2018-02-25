@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
+import { InjectedRouter } from 'react-router';
 import { RootState } from '../redux/types';
 import { Table, InputNumber, Button, Select, Card } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
@@ -13,6 +14,8 @@ interface CartProps {
     cartData: StateCartType[];
     dispatch: Dispatch<() => {}>;
     addresses: StateAddressType[];
+    currentUser: StateCurrentUserType;
+    router: InjectedRouter
 }
 
 class Cart extends React.Component<CartProps> {
@@ -22,14 +25,18 @@ class Cart extends React.Component<CartProps> {
     }
 
     componentDidMount() {
-        const { dispatch } = this.props;
+        const { dispatch, currentUser } = this.props;
+        if(!currentUser) return;
+        this.checkIfNeedRedirect()
         dispatch(requestAddress());
         this.selectAllBook();
     }
 
     componentWillReceiveProps(nextProps: CartProps) {
         const {addresses: nextAddresses = [], cartData: nextCart} = nextProps
-        const {addresses = [], cartData} = this.props
+        this.checkIfNeedRedirect(nextProps);
+        const {addresses = [], cartData, currentUser} = this.props
+        if(!currentUser) return;
         if(addresses.length === 0 && nextAddresses.length > 0) {
             this.setState({
                 selectedAddress: (nextAddresses.find(address => Boolean(address.is_default))|| nextAddresses[0]).id
@@ -37,6 +44,13 @@ class Cart extends React.Component<CartProps> {
         }
         if(cartData.length === 0 && nextCart.length > 0) {
             this.selectAllBook(nextProps);
+        }
+    }
+
+    checkIfNeedRedirect = (props: CartProps = this.props) => {
+        const {currentUser, router} = props;
+        if (!currentUser) {
+            router.push('/');
         }
     }
 
@@ -69,7 +83,7 @@ class Cart extends React.Component<CartProps> {
     }
 
     render() {
-        const { cartData, addresses = [] } = this.props;
+        const { cartData, addresses } = this.props;
         const { selectedRowKeys, selectedAddress } = this.state;
         const columns: ColumnProps<StateCartType>[] = [
             {
@@ -172,7 +186,7 @@ class Cart extends React.Component<CartProps> {
                         onChange={(val) => this.setState({selectedAddress: val})}
                     >
                         {
-                            addresses.map((addressInfo: StateAddressType) => {
+                            (addresses || []).map((addressInfo: StateAddressType) => {
                                 const {id, name, address, phone} = addressInfo
                                 return (
                                     <Option value={id.toString()}>{name}, {address}, {phone}</Option>
@@ -204,6 +218,7 @@ const mapStateProps = (state: RootState) => {
     return {
       cartData: state.cart.cart,
       addresses: state.profile.address,
+      currentUser: state.profile.currentUser
     };
 };
 
