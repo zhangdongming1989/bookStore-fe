@@ -32,7 +32,8 @@ class AppHeader extends React.Component<Props, {}> {
     }
 
     render() {
-        const { currentUser } = this.props;
+        const { currentUser, cart: carts } = this.props;
+        const quantity = carts.reduce((prev, cart) => (prev + cart.order_quantity), 0);
         return (
             <div className="AppHeader-Wrapper">
               <div className="AppHeader-WrapperContent">
@@ -59,12 +60,15 @@ class AppHeader extends React.Component<Props, {}> {
                       {
                           currentUser &&
                           <MenuItem>
-                              <Link to="cart" >购物车</Link>
+                              <Link to="cart" >购物车[{quantity}]</Link>
                           </MenuItem>
                       }
 
                   </Menu>
-                  <SearchBar />
+                  {
+                    location.pathname !== '/' && <SearchBar />
+                  }
+
                   <Link to="/">首页</Link>
               </div>
             </div>

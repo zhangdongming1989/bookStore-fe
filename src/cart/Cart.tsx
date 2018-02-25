@@ -143,7 +143,8 @@ class Cart extends React.Component<CartProps> {
             onChange: this.onSelectChange,
         };
         const priceInfo = selectedRowKeys.reduce((prev : {origin_price: number, actual_price: number, order_quantity: number}, rowKey: number) => {
-            const curData = cartData.find((cart: StateCartType) => cart.id.toString() === rowKey.toString()) as StateCartType;
+            const curData = cartData.find((cart: StateCartType) => cart.id.toString() === rowKey.toString());
+            if(!curData) return prev;
             return {
                 origin_price: prev.origin_price + curData.order_quantity * curData.origin_price,
                 actual_price: prev.actual_price + curData.order_quantity * curData.actual_price,
