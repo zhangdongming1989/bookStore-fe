@@ -1,8 +1,14 @@
+interface BookListObjectType {
+    closed: BookListType;
+    return: BookListType;
+    default: BookListType;
+}
+
 declare interface StateProfileTypes {
     readonly currentUser: StateCurrentUserType | null;
     readonly accountInfo: StateAccountInfoType | null;
     readonly accountInfoLog: StateAccountInfoLogType[] | null;
-    readonly bookList: BookListType | null;
+    readonly bookListObject: BookListObjectType;
     readonly bookListDetail: BookListDetailType | {};
     readonly address: StateAddressType[] | null;
 }
@@ -102,3 +108,9 @@ declare type StateAddAddressType = {
     post_code: string;
     phone: string;
 };
+
+declare type ActionOrderPayloadType = 'closed' | 'return' | 'default';
+declare interface ActionOrderType {
+    type: string;
+    payload: ActionOrderPayloadType;
+}

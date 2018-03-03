@@ -2,7 +2,6 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Table, Button } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
-import { RootState } from '../redux/types';
 // import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { requestBookList } from '../redux/profile/actions';
 import BookListDetailModal from './BookListDetailModal';
@@ -14,12 +13,6 @@ interface BookListProps {
     bookList: BookListType;
     dispatch: Dispatch<() => {}>;
 }
-
-const mapStateToProps = (state: RootState) => {
-    return {
-      bookList: state.profile.bookList,
-    };
-};
 
 class BookList extends React.Component<BookListProps, {}> {
 
@@ -127,4 +120,4 @@ class BookList extends React.Component<BookListProps, {}> {
     }
 }
 
-export default connect(mapStateToProps)(BookList);
+export default connect()(BookList);
