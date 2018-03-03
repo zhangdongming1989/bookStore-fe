@@ -15,15 +15,9 @@ yarn install
 yarn start
 ```
 
-## 路由
-
-/    首页(WIP)    
-___ /account 帐号相关 (virtual)  
-______ /account/login 登录
-______ /account/register 注册
-
-
-## WIP
-首页  
-redux 搭建
+关于API proxy
+方法1：可以charles 代理 api 到线上
+方法2：
+1.open -a Google\ Chrome --args --disable-web-security --user-data-dir ~/tmp/chrome/ 忽略跨域
+2.控制台输入 localStorage.setItem('realIp', true) 强制改写 api host 
  
