@@ -1,7 +1,14 @@
 interface BookListObjectType {
-    closed: BookListType;
-    return: BookListType;
-    default: BookListType;
+    buy: {
+        closed: BookListType;
+        return: BookListType;
+        default: BookListType;
+    };
+    sell: {
+        closed: BookListType;
+        return: BookListType;
+        default: BookListType;
+    };
 }
 
 declare interface StateProfileTypes {
@@ -109,8 +116,12 @@ declare type StateAddAddressType = {
     phone: string;
 };
 
-declare type ActionOrderPayloadType = 'closed' | 'return' | 'default';
+declare type ActionOrderStatus = 'closed' | 'return' | 'default';
+declare type ActionOrderTypeType = 'buy' | 'sell';
 declare interface ActionOrderType {
     type: string;
-    payload: ActionOrderPayloadType;
+    payload: {
+        type: ActionOrderTypeType;
+        status: ActionOrderStatus;
+    };
 }

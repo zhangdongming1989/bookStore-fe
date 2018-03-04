@@ -3,9 +3,8 @@ import { connect, Dispatch } from 'react-redux';
 import { Table, Button } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
 // import { WrappedFormUtils } from 'antd/lib/form/Form';
-import { requestBookList } from '../redux/profile/actions';
-import BookListDetailModal from './BookListDetailModal';
-import { requestBookListDetail } from '../redux/profile/actions';
+import BookListDetailModal from '../BookListDetailModal';
+import { requestBookListDetail } from '../../redux/profile/actions';
 
 // tslint:disable
 
@@ -19,11 +18,6 @@ class BookList extends React.Component<BookListProps, {}> {
     state= {
         detailModalVisible: false,
         selectedRecord: null,
-    }
-
-    componentDidMount() {
-        const {dispatch} = this.props
-        dispatch(requestBookList())
     }
 
     handleToggleModal = () => {

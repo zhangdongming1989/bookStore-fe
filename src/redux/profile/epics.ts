@@ -8,9 +8,16 @@ import { API_ROOT } from '../../constants';
 // import {accountActions} from "../account/actions";
 
 const orderQueryMap = {
-    default: '/order/query',
-    return: '/order/return_query',
-    closed: '/order/closed_query',
+    buy: {
+        default: '/order/query',
+        return: '/order/return_query',
+        closed: '/order/closed_query',
+    },
+    sell: {
+        default: '/order/query',
+        return: '/order/return_query',
+        closed: '/order/closed_query',
+    }
 };
 // tslint:disable
 const currentUserEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
@@ -76,7 +83,7 @@ const queryBookList: Epic<ActionType, EpicType> = (action$: ActionsObservable<Ac
     action$
         .ofType(profileActions.BOOKLIST.REQUEST)
         .mergeMap((action: ActionOrderType) => ajax.post(
-             `${API_ROOT}${orderQueryMap[action.payload]}`,
+             `${API_ROOT}${orderQueryMap[action.payload.type][action.payload.status]}`,
             {
                 orderId: 12,
             },
@@ -88,7 +95,8 @@ const queryBookList: Epic<ActionType, EpicType> = (action$: ActionsObservable<Ac
                 return {
                     type: profileActions.BOOKLIST.SUCCESS,
                     payload: {
-                        type: action.payload,
+                        type: action.payload.type,
+                        status: action.payload.status,
                         value: Object.values(res.response.payload)
                     }
                 }
