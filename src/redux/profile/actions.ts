@@ -58,9 +58,13 @@ export const requestAccountInfo = () => {
     };
 };
 
-export const requestBookList = () => {
+export const requestBookList = (type: ActionOrderTypeType = 'buy' , status: ActionOrderStatus = 'default') => {
     return {
         type: profileActions.BOOKLIST.REQUEST,
+        payload: {
+            type,
+            status,
+        }
     };
 };
 

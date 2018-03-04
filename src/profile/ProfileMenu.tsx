@@ -11,8 +11,12 @@ const profileRouterList = [
         path: '/profile',
     },
     {
-        key: 'book_list',
-        path: '/profile/book_list',
+        key: 'buy_book_list',
+        path: '/profile/buy/book_list',
+    },
+    {
+        key: 'sell_book_list',
+        path: '/profile/sell/book_list',
     },
     {
         key: 'user_info',
@@ -65,8 +69,11 @@ export default class BookList extends React.Component<MenuProps, {}> {
                 <Menu.Item key="index">
                     <Link to="/profile">个人中心</Link>
                 </Menu.Item>
-                <MenuItemGroup key="book_center" title={<span>订单中心</span>}>
-                    <Menu.Item key="book_list"><Link to="/profile/book_list">订单列表</Link></Menu.Item>
+                <MenuItemGroup key="buy" title={<span>我是买家</span>}>
+                    <Menu.Item key="buy_book_list"><Link to="/profile/buy/book_list">订单列表</Link></Menu.Item>
+                </MenuItemGroup>
+                <MenuItemGroup key="sell" title={<span>我是卖家</span>}>
+                    <Menu.Item key="sell_book_list"><Link to="/profile/sell/book_list">订单列表</Link></Menu.Item>
                 </MenuItemGroup>
                 <MenuItemGroup key="account_center" title={<span>账户中心</span>}>
                     {/*<Menu.Item key="my_bank">我的银行</Menu.Item>*/}

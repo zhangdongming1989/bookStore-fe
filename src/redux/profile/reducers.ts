@@ -6,7 +6,19 @@ export const initialState: StateProfileTypes = {
     currentUser: null,
     accountInfo: null,
     accountInfoLog: null,
-    bookList: null,
+    bookListObject: {
+        buy: {
+            default: [],
+            return: [],
+            closed: [],
+        },
+        sell: {
+            default: [],
+            return: [],
+            closed: [],
+        }
+
+    },
     bookListDetail: {},
     address: null,
 };
@@ -42,10 +54,20 @@ export const profileReducer = (
     }
 
     if (action.type === profileActions.BOOKLIST.SUCCESS) {
-        const { payload } = action;
+        const { payload } = action as
+            {
+                type: string,
+                payload: {type: ActionOrderTypeType, status: ActionOrderStatus, value: StateBookListItemType[]}
+            };
         return {
             ...state,
-            bookList: payload
+            bookListObject: {
+                ...state.bookListObject || {},
+                [payload.type]: {
+                    ...state.bookListObject[payload.type],
+                    [payload.status]: payload.value,
+                },
+            }
         };
     }
 

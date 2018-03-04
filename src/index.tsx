@@ -13,6 +13,23 @@ const renderRoot = (currentUserState: CurrentUserType) => {
     const initialRootState = {
         profile: {
             currentUser: currentUserState,
+            accountInfo: null,
+            accountInfoLog: null,
+            bookListObject: {
+                buy: {
+                    default: [],
+                    return: [],
+                    closed: [],
+                },
+                sell: {
+                    default: [],
+                    return: [],
+                    closed: [],
+                }
+
+            },
+            bookListDetail: {},
+            address: null,
         },
     }
 

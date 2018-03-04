@@ -1,8 +1,21 @@
+interface BookListObjectType {
+    buy: {
+        closed: BookListType;
+        return: BookListType;
+        default: BookListType;
+    };
+    sell: {
+        closed: BookListType;
+        return: BookListType;
+        default: BookListType;
+    };
+}
+
 declare interface StateProfileTypes {
     readonly currentUser: StateCurrentUserType | null;
     readonly accountInfo: StateAccountInfoType | null;
     readonly accountInfoLog: StateAccountInfoLogType[] | null;
-    readonly bookList: BookListType | null;
+    readonly bookListObject: BookListObjectType;
     readonly bookListDetail: BookListDetailType | {};
     readonly address: StateAddressType[] | null;
 }
@@ -102,3 +115,13 @@ declare type StateAddAddressType = {
     post_code: string;
     phone: string;
 };
+
+declare type ActionOrderStatus = 'closed' | 'return' | 'default';
+declare type ActionOrderTypeType = 'buy' | 'sell';
+declare interface ActionOrderType {
+    type: string;
+    payload: {
+        type: ActionOrderTypeType;
+        status: ActionOrderStatus;
+    };
+}

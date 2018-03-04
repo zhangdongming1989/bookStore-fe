@@ -7,6 +7,18 @@ import { profileActions } from './actions';
 import { API_ROOT } from '../../constants';
 // import {accountActions} from "../account/actions";
 
+const orderQueryMap = {
+    buy: {
+        default: '/order/query',
+        return: '/order/return_query',
+        closed: '/order/closed_query',
+    },
+    sell: {
+        default: '/order/query',
+        return: '/order/return_query',
+        closed: '/order/closed_query',
+    }
+};
 // tslint:disable
 const currentUserEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
     action$
@@ -67,11 +79,11 @@ const logoutEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<Actio
                 })
         );
 
-const queryBookList: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
+const queryBookList: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionOrderType>) =>
     action$
         .ofType(profileActions.BOOKLIST.REQUEST)
-        .mergeMap(() => ajax.post(
-             `${API_ROOT}/order/query`,
+        .mergeMap((action: ActionOrderType) => ajax.post(
+             `${API_ROOT}${orderQueryMap[action.payload.type][action.payload.status]}`,
             {
                 orderId: 12,
             },
@@ -82,7 +94,11 @@ const queryBookList: Epic<ActionType, EpicType> = (action$: ActionsObservable<Ac
             .map((res: AjaxResponse) => {
                 return {
                     type: profileActions.BOOKLIST.SUCCESS,
-                    payload: Object.values(res.response.payload)
+                    payload: {
+                        type: action.payload.type,
+                        status: action.payload.status,
+                        value: Object.values(res.response.payload)
+                    }
                 }
             })
         )
