@@ -22,13 +22,12 @@ class BookListTabsPage extends React.Component<BookListTabsPageProps> {
         dispatch(requestBookList('buy', type));
     }
     render() {
-        const {default: defaultList, return: returnList, closed: closedList} = this.props.bookListObject.buy;
+        const {selling: sellingList, sold: soldList} = this.props.bookListObject.buy;
 
         return (
-            <Tabs defaultActiveKey="default" onChange={(key: ActionOrderStatus) => this.handleQueryBookList(key)}>
-                <TabPane tab="全部" key="default"><BookList bookList={defaultList} /></TabPane>
-                <TabPane tab="已下单" key="return"><BookList bookList={returnList} /></TabPane>
-                <TabPane tab="已完成" key="closed"><BookList bookList={closedList} /></TabPane>
+            <Tabs defaultActiveKey="selling" onChange={(key: ActionOrderStatus) => this.handleQueryBookList(key)}>
+                <TabPane tab="处理中" key="selling"><BookList bookList={sellingList} /></TabPane>
+                <TabPane tab="已完成" key="sold"><BookList bookList={soldList} /></TabPane>
                 {/*<TabPane tab=""><BookList bookList={[]} /></TabPane>*/}
             </Tabs>
         );

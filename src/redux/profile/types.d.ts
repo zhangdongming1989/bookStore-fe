@@ -1,13 +1,11 @@
 interface BookListObjectType {
     buy: {
-        closed: BookListType;
-        return: BookListType;
-        default: BookListType;
+        selling: BookListType;
+        sold: BookListType;
     };
     sell: {
-        closed: BookListType;
-        return: BookListType;
-        default: BookListType;
+        selling: BookListType;
+        sold: BookListType;
     };
 }
 
@@ -116,7 +114,7 @@ declare type StateAddAddressType = {
     phone: string;
 };
 
-declare type ActionOrderStatus = 'closed' | 'return' | 'default';
+declare type ActionOrderStatus = 'selling' | 'sold';
 declare type ActionOrderTypeType = 'buy' | 'sell';
 declare interface ActionOrderType {
     type: string;
