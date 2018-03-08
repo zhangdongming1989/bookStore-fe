@@ -8,14 +8,12 @@ export const initialState: StateProfileTypes = {
     accountInfoLog: null,
     bookListObject: {
         buy: {
-            default: [],
-            return: [],
-            closed: [],
+            selling: [],
+            sold: [],
         },
         sell: {
-            default: [],
-            return: [],
-            closed: [],
+            selling: [],
+            sold: [],
         }
 
     },

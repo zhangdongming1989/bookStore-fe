@@ -9,14 +9,13 @@ import { API_ROOT } from '../../constants';
 
 const orderQueryMap = {
     buy: {
-        default: '/order/query',
-        return: '/order/return_query',
-        closed: '/order/closed_query',
+        selling: '/order/query',
+        sold: '/order/closed_query',
     },
     sell: {
-        default: '/order/query',
-        return: '/order/return_query',
-        closed: '/order/closed_query',
+        // todo: change to selling sold
+        selling: '/order/return_query',
+        sold: '/order/closed_query',
     }
 };
 // tslint:disable
