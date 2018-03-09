@@ -19,6 +19,11 @@ export const initialState: StateProfileTypes = {
     },
     bookListDetail: {},
     address: null,
+    upload: {
+        loading: false,
+        message: '',
+        result: '',
+    }
 };
 
 export const profileReducer = (

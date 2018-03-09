@@ -30,6 +30,11 @@ const renderRoot = (currentUserState: CurrentUserType) => {
             },
             bookListDetail: {},
             address: null,
+            upload: {
+                message: '',
+                loading: false,
+                result: null,
+            }
         },
     }
 

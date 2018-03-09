@@ -27,6 +27,7 @@ declare type CurrentUserType = {
     pwdanswer: string;
     phone: string;
     qq: string;
+    is_admin: boolean;
 } | null;
 
 declare enum Status {

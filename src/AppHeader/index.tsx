@@ -11,7 +11,7 @@ import './index.css';
 import { RootState } from '../redux/types';
 
 const SubMenu = Menu.SubMenu;
-
+// tslint:disable
 interface Props {
     currentUser: StateCurrentUserType;
     dispatch: Dispatch<() => {}>;

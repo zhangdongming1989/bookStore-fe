@@ -6,6 +6,7 @@ import CurrentUser from './CurrentUser';
 import Address from './Address';
 import BuyBookListPage from './BookList/BookListTabsPage';
 import SellBookListPage from './SellBookList/BookListTabsPage';
+import UpLoad from './SellBookList/Upload';
 
 export default (
     <Route key="profile" path="profile" component={Profile}>
@@ -15,6 +16,7 @@ export default (
         </Route>
         <Route key="sell" path="sell">
             <Route key="sell_book_list" path="book_list" component={SellBookListPage} />
+            <Route key="sell_upload" path="upload" component={UpLoad} />
         </Route>
         <Route key="user_info" path="user_info" component={CurrentUser} />
         <Route key="address" path="address" component={Address} />
