@@ -1,11 +1,11 @@
 /// <reference path="../types.d.ts" />
-import { AjaxResponse, Observable } from 'rxjs/Rx';
+import { AjaxError, AjaxResponse, Observable } from 'rxjs/Rx';
 import { ajax } from 'rxjs/observable/dom/ajax';
 import { ActionsObservable, combineEpics, Epic } from 'redux-observable';
 import { ActionType, EpicType } from '../types';
 import { profileActions } from './actions';
 import { API_ROOT } from '../../constants';
-// import {accountActions} from "../account/actions";
+import { EXCEL_MIME_TYPE } from '../../profile/SellBookList/Upload';
 
 const orderQueryMap = {
     buy: {
@@ -87,7 +87,7 @@ const queryBookList: Epic<ActionType, EpicType> = (action$: ActionsObservable<Ac
                 orderId: 12,
             },
             {
-                'Content-Type': 'application/json',
+                'Content-Type': EXCEL_MIME_TYPE,
             }
         )
             .map((res: AjaxResponse) => {
@@ -164,6 +164,30 @@ const setDefaultAddress: Epic<ActionType, EpicType> = (action$: ActionsObservabl
         )
         .mapTo({type: profileActions.ADDRESS.REQUEST});
 
+const upload: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionUploadType>) =>
+    action$
+        .ofType(profileActions.UPLOAD_REQUEST.REQUEST)
+        .mergeMap((action: ActionUploadType) => {
+            const formData = new FormData;
+            formData.append('file', action.payload);
+            debugger;
+            return ajax.post(
+                `${API_ROOT}/sell/upload`,
+                formData,
+                {
+                    enctype: 'multipart/form-data',
+                })
+                .map((res: AjaxResponse) => {
+                    return {type: profileActions.UPLOAD_REQUEST.SUCCESS, payload: res.response};
+                })
+                .catch((err: AjaxError) =>
+                    Observable.of({
+                        type: profileActions.UPLOAD_REQUEST.FAIL,
+                        payload: err.xhr.response,
+                    })
+                )}
+        );
+
 export default combineEpics(
     currentUserEpic,
     logoutEpic,
@@ -174,4 +198,5 @@ export default combineEpics(
     addAddress,
     deleteAddress,
     setDefaultAddress,
+    upload,
 );

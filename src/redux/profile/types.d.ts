@@ -9,6 +9,13 @@ interface BookListObjectType {
     };
 }
 
+interface UploadType {
+    loading: boolean;
+    result: string;
+    message: string;
+
+}
+
 declare interface StateProfileTypes {
     readonly currentUser: StateCurrentUserType | null;
     readonly accountInfo: StateAccountInfoType | null;
@@ -16,6 +23,7 @@ declare interface StateProfileTypes {
     readonly bookListObject: BookListObjectType;
     readonly bookListDetail: BookListDetailType | {};
     readonly address: StateAddressType[] | null;
+    readonly upload: UploadType;
 }
 
 declare interface StateCurrentUserType {
@@ -29,6 +37,7 @@ declare interface StateCurrentUserType {
     pwdanswer: string;
     phone: string;
     qq: string;
+    is_admin: boolean;
 }
 
 declare interface StateAccountInfoType {
@@ -122,4 +131,9 @@ declare interface ActionOrderType {
         type: ActionOrderTypeType;
         status: ActionOrderStatus;
     };
+}
+
+declare interface ActionUploadType {
+    type: string;
+    payload: File;
 }

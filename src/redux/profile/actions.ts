@@ -37,7 +37,12 @@ export const profileActions = {
     SETDEFAULT_ADDRESS: {
         REQUEST: 'SETDEFAULT_ADDRESS_REQUEST',
         SUCCESS: 'SETDEFAULT_ADDRESS_SUCCESS',
-    }
+    },
+    UPLOAD_REQUEST: {
+        REQUEST: 'UPLOAD_REQUEST',
+        SUCCESS: 'UPLOAD_SUCCESS',
+        FAIL: 'UPLOAD_FAIL',
+    },
 };
 
 export const requestProfile = () => {
@@ -99,5 +104,12 @@ export const requestSetDefaultAddress = (id: string) => {
     return {
         type: profileActions.SETDEFAULT_ADDRESS.REQUEST,
         payload: id,
+    };
+};
+
+export const uploadRequest = (file: File) => {
+    return {
+        type: profileActions.UPLOAD_REQUEST.REQUEST,
+        payload: file,
     };
 };
