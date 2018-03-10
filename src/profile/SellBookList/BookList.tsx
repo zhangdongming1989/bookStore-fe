@@ -4,13 +4,14 @@ import { Table, Button } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
 // import { WrappedFormUtils } from 'antd/lib/form/Form';
 import BookListDetailModal from '../BookListDetailModal';
-import { requestBookListDetail } from '../../redux/profile/actions';
+import { requestBookListDetail, requestConfirmSent } from '../../redux/profile/actions';
 
 // tslint:disable
 
 interface BookListProps {
     bookList: BookListType;
     dispatch: Dispatch<() => {}>;
+    isFinished: boolean;
 }
 
 class BookList extends React.Component<BookListProps, {}> {
@@ -29,6 +30,11 @@ class BookList extends React.Component<BookListProps, {}> {
         this.setState({selectedRecord: record})
         dispatch(requestBookListDetail(record.order_id))
         this.handleToggleModal()
+    }
+
+    confirmSent = (record: BookItemType) => {
+        const {dispatch} = this.props
+        dispatch(requestConfirmSent(record.order_id))
     }
 
     render() {
@@ -87,12 +93,25 @@ class BookList extends React.Component<BookListProps, {}> {
                 title: '操作',
                 render: ((_, record) => {
                     return (
-                        <Button
-                            onClick={() => {this.handleClick(record)}}
-                            size="small"
-                        >
-                            订单书目
-                        </Button>
+                        <div style={{display: 'flex'}}>
+                            <Button
+                                onClick={() => {this.handleClick(record)}}
+                                size="small"
+                                key="show_list"
+                            >
+                                订单书目
+                            </Button>
+                            {
+                                !record.delivery_status &&
+                                <Button
+                                    onClick={() => {this.confirmSent(record)}}
+                                    size="small"
+                                    key="confirm"
+                                >
+                                    确认已发货
+                                </Button>
+                            }
+                        </div>
                     )
                 })
             }

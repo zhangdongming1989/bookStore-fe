@@ -168,7 +168,7 @@ const upload: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionUpl
             const formData = new FormData;
             formData.append('file', action.payload);
             return ajax.post(
-                `${API_ROOT}/sell/upload`,
+                `${API_ROOT}/book/upload_by_excel`,
                 formData,
                 {
                     enctype: 'multipart/form-data',
@@ -194,6 +194,29 @@ const storeBook: Epic<ActionType, EpicType> = (action$: ActionsObservable<Action
                     return {type: profileActions.STORE_BOOK.SUCCESS, payload: Object.values(res.response.payload)};
                 })
         );
+interface DeliverAction {
+    type: string,
+    payload: {
+        orderId: string;
+    };
+}
+const confirmDeliver: Epic<ActionType, EpicType> = (action$: ActionsObservable<DeliverAction>) =>
+    action$
+        .ofType(profileActions.CONFIRM_DELIVER.REQUEST)
+        .mergeMap((action: DeliverAction) => ajax.get(
+            `${API_ROOT}/order/deliveried/${action.payload.orderId}`,
+            )
+        )
+        .mapTo({type: profileActions.BOOKLIST.REQUEST, payload: {type: 'buy', status: 'selling'}});
+
+const confirmSent: Epic<ActionType, EpicType> = (action$: ActionsObservable<DeliverAction>) =>
+    action$
+        .ofType(profileActions.CONFIRM_SENT.REQUEST)
+        .mergeMap((action: DeliverAction) => ajax.get(
+            `${API_ROOT}/order/delivering/${action.payload.orderId}`,
+            )
+        )
+        .mapTo({type: profileActions.BOOKLIST.REQUEST, payload: {type: 'sell', status: 'selling'}});
 
 export default combineEpics(
     currentUserEpic,
@@ -207,4 +230,6 @@ export default combineEpics(
     setDefaultAddress,
     upload,
     storeBook,
+    confirmDeliver,
+    confirmSent,
 );

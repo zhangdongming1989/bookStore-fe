@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Button, Modal, notification } from 'antd';
+import { Button, Modal, notification, Icon } from 'antd';
 import * as UploadComponent from 'antd/es/upload';
 import { RootState } from '../../redux/types';
 import { uploadRequest } from '../../redux/profile/actions';
@@ -42,9 +42,9 @@ class Upload extends React.Component<Props, {fileList: UploadFile[]}> {
         const {loading, result, message} = this.props;
         const {fileList} = this.state;
         return (
-            <div>
+            <div style={{width: '100%', padding: 20}}>
                 <Dragger
-                    style={{padding: '15px 0'}}
+                    style={{padding: '15px 0', width: '100%'}}
                     accept={EXCEL_MIME_TYPE}
                     fileList={this.state.fileList}
                     beforeUpload={(file) => {
@@ -67,7 +67,21 @@ class Upload extends React.Component<Props, {fileList: UploadFile[]}> {
                         });
                     }}
                 >
-                    点击选择或拖拽文件到本区域
+                    <div
+                        style={{
+                            height: 200,
+                            backgroundColor: '#d9d9d9',
+                            opacity: 0.5,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-around',
+                        }}
+                    >
+                        <p style={{fontSize: 40, color: 'blue'}}>
+                            <Icon type="inbox" />
+                        </p>
+                        <p>点击或者将文件拖拽进灰色区域，暂时只支持一次上传一个 xlsx 文件</p>
+                    </div>
                 </Dragger>
                 <Button
                     style={{margin: '10px auto', display: 'block', width: 100}}
@@ -77,7 +91,7 @@ class Upload extends React.Component<Props, {fileList: UploadFile[]}> {
                     disabled={fileList.length === 0 || loading}
                     loading={loading}
                 >
-                    导入
+                    上传
                 </Button>
                 <Modal
                     title={result ? '成功啦！' : 'ops! 出问题了'}
