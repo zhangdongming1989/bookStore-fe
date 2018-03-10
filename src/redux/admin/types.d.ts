@@ -16,5 +16,6 @@ declare interface ActionChargeRequestType {
     payload: {
       userId: string;
       amount: number;
+      name: string;
     };
 }

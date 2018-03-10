@@ -39,7 +39,7 @@ class Recharge extends React.Component<Props, RechargeState> {
         const {searchValue, moneyValue} = this.state
         const accountInfo = accountInfoList[searchValue]
         this.setState({moneyValue: 0})
-        dispatch(requestCharge(accountInfo.user_id, moneyValue))
+        dispatch(requestCharge(accountInfo.user_id, moneyValue, searchValue))
     }
 
     renderSearch = () => {

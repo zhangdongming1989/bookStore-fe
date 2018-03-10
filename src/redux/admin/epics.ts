@@ -40,7 +40,10 @@ const chargeEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<Actio
                 .map(() => {
                     message.success('充值成功！');
                     return {
-                        type: adminActions.RECHARGE.SUCCESS,
+                        type: adminActions.GET_ACCOUNT.REQUEST,
+                        payload: {
+                            name: action.payload.name
+                        }
                     };
                 })
                 .catch(() => {

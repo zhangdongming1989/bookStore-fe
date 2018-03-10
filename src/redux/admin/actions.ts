@@ -22,12 +22,13 @@ export const requestGetAccount = (name: string) => {
     };
 };
 
-export const requestCharge = (userId: string, amount: number) => {
+export const requestCharge = (userId: string, amount: number, name: string) => {
     return {
         type: adminActions.RECHARGE.REQUEST,
         payload: {
             userId,
             amount,
+            name,
         }
     };
 };
