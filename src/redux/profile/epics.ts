@@ -5,12 +5,11 @@ import { ActionsObservable, combineEpics, Epic } from 'redux-observable';
 import { ActionType, EpicType } from '../types';
 import { profileActions } from './actions';
 import { API_ROOT } from '../../constants';
-import { EXCEL_MIME_TYPE } from '../../profile/SellBookList/Upload';
 
 const orderQueryMap = {
     buy: {
-        selling: '/order/query',
-        sold: '/order/query/buying',
+        selling: '/order/query/buying',
+        sold: '/order/query/bought',
     },
     sell: {
         // todo: change to selling sold
@@ -78,14 +77,12 @@ const logoutEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<Actio
                 })
         );
 
-const queryBookList: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
+const queryBookList: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionOrderType>) =>
     action$
         .ofType(profileActions.BOOKLIST.REQUEST)
-        .mergeMap(() => ajax.post(
-             `${API_ROOT}/order/query`,
-            {
-                orderId: 12,
-            },
+        .mergeMap((action: ActionOrderType) => ajax.post(
+             `${API_ROOT}${orderQueryMap[action.payload.type][action.payload.status]}`,
+            {},
             {
                 'Content-Type': 'application/json',
             }
@@ -93,7 +90,11 @@ const queryBookList: Epic<ActionType, EpicType> = (action$: ActionsObservable<Ac
             .map((res: AjaxResponse) => {
                 return {
                     type: profileActions.BOOKLIST.SUCCESS,
-                    payload: Object.values(res.response.payload)
+                    payload: {
+                        type: action.payload.type,
+                        status: action.payload.status,
+                        value: Object.values(res.response.payload)
+                    }
                 }
             })
         )
@@ -166,7 +167,6 @@ const upload: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionUpl
         .mergeMap((action: ActionUploadType) => {
             const formData = new FormData;
             formData.append('file', action.payload);
-            debugger;
             return ajax.post(
                 `${API_ROOT}/sell/upload`,
                 formData,
@@ -184,6 +184,17 @@ const upload: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionUpl
                 )}
         );
 
+const storeBook: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
+    action$
+        .ofType(profileActions.STORE_BOOK.REQUEST)
+        .mergeMap(() => ajax.get(
+            `${API_ROOT}/book/supplied`,
+            )
+                .map((res: AjaxResponse) => {
+                    return {type: profileActions.STORE_BOOK.SUCCESS, payload: Object.values(res.response.payload)};
+                })
+        );
+
 export default combineEpics(
     currentUserEpic,
     logoutEpic,
@@ -195,4 +206,5 @@ export default combineEpics(
     deleteAddress,
     setDefaultAddress,
     upload,
+    storeBook,
 );

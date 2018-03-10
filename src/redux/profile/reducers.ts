@@ -15,7 +15,6 @@ export const initialState: StateProfileTypes = {
             selling: [],
             sold: [],
         }
-
     },
     bookListDetail: {},
     address: null,
@@ -23,7 +22,8 @@ export const initialState: StateProfileTypes = {
         loading: false,
         message: '',
         result: '',
-    }
+    },
+    storeBookList: [],
 };
 
 export const profileReducer = (
@@ -104,6 +104,14 @@ export const profileReducer = (
                 payload,
             ]
 
+        };
+    }
+
+    if (action.type === profileActions.STORE_BOOK.SUCCESS) {
+        const {payload} = action;
+        return {
+            ...state,
+            storeBookList: payload,
         };
     }
 
