@@ -2,7 +2,10 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { InjectedRouter } from 'react-router';
 import { RootState } from '../redux/types';
+import AdminMenu from './AdminMenu';
+import './index.css';
 
+//tslint:disable
 interface Props {
     currentUser: CurrentUserType;
     dispatch: Dispatch<() => {}>;
@@ -19,11 +22,22 @@ class Admin extends React.Component<Props> {
     }
 
     checkIfIsAdmin = (props = this.props) => {
-        const {} = props;
+        const {currentUser, router} = props;
+        if (!currentUser || !currentUser.is_admin) {
+            router.replace('/');
+        }
     }
     render() {
+        const {children} = this.props;
         return (
-            <div>admin</div>
+            <div className="Admin">
+                <h3 className="Admin-Title">管理员中心</h3>
+                <div>
+                    <AdminMenu pathname={location.pathname} />
+                    {children}
+                </div>
+            </div>
+
         );
     }
 }

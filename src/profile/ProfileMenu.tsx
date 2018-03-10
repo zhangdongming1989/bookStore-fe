@@ -29,6 +29,10 @@ const profileRouterList = [
     {
         key: 'address',
         path: '/profile/address',
+    },
+    {
+        key: 'store_list',
+        path: 'profile/sell/store_list'
     }
 ];
 
@@ -79,6 +83,7 @@ export default class BookList extends React.Component<MenuProps, {}> {
                 <MenuItemGroup key="sell" title={<span>我是卖家</span>}>
                     <Menu.Item key="sell_book_list"><Link to="/profile/sell/book_list">订单列表</Link></Menu.Item>
                     <Menu.Item key="sell_upload"><Link to="/profile/sell/upload">上传书目</Link></Menu.Item>
+                    <Menu.Item key="store_list"><Link to="/profile/sell/store_list">查看库存</Link></Menu.Item>
                 </MenuItemGroup>
                 <MenuItemGroup key="account_center" title={<span>账户中心</span>}>
                     {/*<Menu.Item key="my_bank">我的银行</Menu.Item>*/}

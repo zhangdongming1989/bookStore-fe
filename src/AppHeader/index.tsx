@@ -66,7 +66,12 @@ class AppHeader extends React.Component<Props, {}> {
 
                   </Menu>
                   <SearchBar />
-                  <Link to="/">首页</Link>
+                  {
+                      <div className="AppHeader-Right">
+                          <Link to="/">首页</Link>
+                          {currentUser && currentUser.is_admin && <Link to="/admin">管理员中心</Link>}
+                      </div>
+                  }
               </div>
             </div>
         );

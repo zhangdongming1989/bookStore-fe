@@ -43,6 +43,11 @@ export const profileActions = {
         SUCCESS: 'UPLOAD_SUCCESS',
         FAIL: 'UPLOAD_FAIL',
     },
+    STORE_BOOK: {
+        REQUEST: 'STORE_BOOK_REQUEST',
+        SUCCESS: 'STORE_BOOK_SUCCESS',
+        FAIL: 'STORE_BOOK_FAIL',
+    }
 };
 
 export const requestProfile = () => {
@@ -111,5 +116,11 @@ export const uploadRequest = (file: File) => {
     return {
         type: profileActions.UPLOAD_REQUEST.REQUEST,
         payload: file,
+    };
+};
+
+export const storeBookRequest = () => {
+    return {
+        type: profileActions.STORE_BOOK.REQUEST
     };
 };

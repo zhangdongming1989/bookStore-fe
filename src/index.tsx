@@ -34,7 +34,8 @@ const renderRoot = (currentUserState: CurrentUserType) => {
                 message: '',
                 loading: false,
                 result: null,
-            }
+            },
+            storeBookList: [],
         },
     }
 

@@ -13,7 +13,6 @@ interface UploadType {
     loading: boolean;
     result: string;
     message: string;
-
 }
 
 declare interface StateProfileTypes {
@@ -24,6 +23,7 @@ declare interface StateProfileTypes {
     readonly bookListDetail: BookListDetailType | {};
     readonly address: StateAddressType[] | null;
     readonly upload: UploadType;
+    readonly storeBookList: StoreBookItemType[];
 }
 
 declare interface StateCurrentUserType {
@@ -80,6 +80,10 @@ declare type BookListDetailType = StateBookItemDetail[];
 declare type StateBookListDetailType = {
   [propsName: string]: BookListDetailType;
 };
+
+declare interface StoreBookItemType extends StateSearchResultType {
+    discount: number;
+}
 
 declare type BookListDetailActionType = {
     type: string;

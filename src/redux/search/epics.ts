@@ -13,9 +13,7 @@ const profileEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<Acti
             )
                 .map((res: AjaxResponse) => {
                     const {payload} = res.response;
-                    const finalPayload = action.payload.type
-                    === 'isbn' ? [payload] : Object.values(payload);
-                    return {type: searchActions.GET.SUCCESS, payload: finalPayload};
+                    return {type: searchActions.GET.SUCCESS, payload: Object.values(payload)};
                 })
         );
 
