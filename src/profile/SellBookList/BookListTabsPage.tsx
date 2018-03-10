@@ -26,8 +26,8 @@ class BookListTabsPage extends React.Component<BookListTabsPageProps> {
 
         return (
             <Tabs defaultActiveKey="selling" onChange={(key: ActionOrderStatus) => this.handleQueryBookList(key)}>
-                <TabPane tab="处理中" key="selling"><BookList bookList={sellingList} /></TabPane>
-                <TabPane tab="已完成" key="sold"><BookList bookList={soldList} /></TabPane>
+                <TabPane tab="处理中" key="selling"><BookList bookList={sellingList} isFinished={false} /></TabPane>
+                <TabPane tab="已完成" key="sold"><BookList bookList={soldList} isFinished={true} /></TabPane>
                 {/*<TabPane tab=""><BookList bookList={[]} /></TabPane>*/}
             </Tabs>
         );

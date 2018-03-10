@@ -32,7 +32,7 @@ class Admin extends React.Component<Props> {
         return (
             <div className="Admin">
                 <h3 className="Admin-Title">管理员中心</h3>
-                <div>
+                <div style={{display: 'flex'}}>
                     <AdminMenu pathname={location.pathname} />
                     {children}
                 </div>

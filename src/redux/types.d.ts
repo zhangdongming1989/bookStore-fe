@@ -3,7 +3,7 @@ import { RouterState } from 'react-router-redux';
 
 declare interface ActionType {
     type: string;
-    payload?: Object;
+    payload?: object;
 }
 
 declare interface RootState {
@@ -12,6 +12,7 @@ declare interface RootState {
     profile: StateProfileTypes;
     search: StateSearchTypes;
     cart: StateCartTypes;
+    admin: StateAdminType;
 }
 
 export type EpicType = StateAccountTypes | StateProfileTypes | RootState;

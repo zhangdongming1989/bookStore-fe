@@ -47,6 +47,16 @@ export const profileActions = {
         REQUEST: 'STORE_BOOK_REQUEST',
         SUCCESS: 'STORE_BOOK_SUCCESS',
         FAIL: 'STORE_BOOK_FAIL',
+    },
+    CONFIRM_DELIVER: {
+        REQUEST: 'CONFIRM_DELIVER_REQUEST',
+        SUCCESS: 'CONFIRM_DELIVER_SUCCESS',
+        FAIL: 'CONFIRM_DELIVER_FAIL',
+    },
+    CONFIRM_SENT: {
+        REQUEST: 'CONFIRM_SENT_REQUEST',
+        SUCCESS: 'CONFIRM_SENT_SUCCESS',
+        FAIL: 'CONFIRM_SENT_FAIL',
     }
 };
 
@@ -122,5 +132,23 @@ export const uploadRequest = (file: File) => {
 export const storeBookRequest = () => {
     return {
         type: profileActions.STORE_BOOK.REQUEST
+    };
+};
+
+export const requestConfirmOrder = (orderId: string) => {
+    return {
+        type: profileActions.CONFIRM_DELIVER.REQUEST,
+        payload: {
+            orderId,
+        },
+    };
+};
+
+export const requestConfirmSent = (orderId: string) => {
+    return {
+        type: profileActions.CONFIRM_SENT.REQUEST,
+        payload: {
+            orderId,
+        },
     };
 };
