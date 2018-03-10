@@ -21,3 +21,8 @@
     width: 300px !important;
     margin-left: -40px !important;
 }
+.AppHeader-Right {
+    min-width: 200px;
+    display: flex;
+    justify-content: space-between;
+}

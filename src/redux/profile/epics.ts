@@ -10,12 +10,12 @@ import { EXCEL_MIME_TYPE } from '../../profile/SellBookList/Upload';
 const orderQueryMap = {
     buy: {
         selling: '/order/query',
-        sold: '/order/closed_query',
+        sold: '/order/query/buying',
     },
     sell: {
         // todo: change to selling sold
-        selling: '/order/return_query',
-        sold: '/order/closed_query',
+        selling: '/order/query/selling',
+        sold: '/order/query/sold',
     }
 };
 // tslint:disable
@@ -78,26 +78,22 @@ const logoutEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<Actio
                 })
         );
 
-const queryBookList: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionOrderType>) =>
+const queryBookList: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
     action$
         .ofType(profileActions.BOOKLIST.REQUEST)
-        .mergeMap((action: ActionOrderType) => ajax.post(
-             `${API_ROOT}${orderQueryMap[action.payload.type][action.payload.status]}`,
+        .mergeMap(() => ajax.post(
+             `${API_ROOT}/order/query`,
             {
                 orderId: 12,
             },
             {
-                'Content-Type': EXCEL_MIME_TYPE,
+                'Content-Type': 'application/json',
             }
         )
             .map((res: AjaxResponse) => {
                 return {
                     type: profileActions.BOOKLIST.SUCCESS,
-                    payload: {
-                        type: action.payload.type,
-                        status: action.payload.status,
-                        value: Object.values(res.response.payload)
-                    }
+                    payload: Object.values(res.response.payload)
                 }
             })
         )
