@@ -1,7 +1,7 @@
-const useRealIp = Boolean(localStorage.getItem('realIp'));
+const useRealIp = Number(localStorage.getItem('realIp'));
 export const API_ROOT = (() => {
     if (['localhost', '127.0.0.1'].includes(location.hostname)) {
-        return useRealIp ? '/bookStore/webapi' : 'http://127.0.0.1:5000/bookStore/webapi';
+        return Boolean(useRealIp) ? '/bookStore/webapi' : 'http://127.0.0.1:5000/bookStore/webapi';
     }
     return '/bookStore/webapi';
 })();
