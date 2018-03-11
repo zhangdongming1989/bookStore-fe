@@ -99,6 +99,20 @@ const queryBookList: Epic<ActionType, EpicType> = (action$: ActionsObservable<Ac
             })
         )
 
+const queryAddressByOrder: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
+    action$
+        .ofType(profileActions.QUERY_ADDRESS_BY_ORDER.REQUEST)
+        .mergeMap((action: ActionType) => ajax.get(
+            `${API_ROOT}/order/info/${action.payload}`,
+            )
+                .map((res: AjaxResponse) => {
+                    return {
+                        type: profileActions.QUERY_ADDRESS_BY_ORDER.SUCCESS,
+                        payload: res.response.payload
+                    }
+                })
+        )
+
 const queryBookDetail: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
     action$.
         ofType(profileActions.BOOKLIST_DETAIL.REQUEST)
@@ -232,4 +246,5 @@ export default combineEpics(
     storeBook,
     confirmDeliver,
     confirmSent,
+    queryAddressByOrder,
 );
