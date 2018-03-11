@@ -57,6 +57,11 @@ export const profileActions = {
         REQUEST: 'CONFIRM_SENT_REQUEST',
         SUCCESS: 'CONFIRM_SENT_SUCCESS',
         FAIL: 'CONFIRM_SENT_FAIL',
+    },
+    QUERY_ADDRESS_BY_ORDER: {
+        REQUEST: 'QUERY_ADDRESS_BY_ORDER_REQUEST',
+        SUCCESS: 'QUERY_ADDRESS_BY_ORDER_SUCCESS',
+        FAIL: 'QUERY_ADDRESS_BY_ORDER_FAIL',
     }
 };
 
@@ -150,5 +155,12 @@ export const requestConfirmSent = (orderId: string) => {
         payload: {
             orderId,
         },
+    };
+};
+
+export const requestAddressByOrder = (orderId: string) => {
+    return {
+        type: profileActions.QUERY_ADDRESS_BY_ORDER.REQUEST,
+        payload: orderId,
     };
 };

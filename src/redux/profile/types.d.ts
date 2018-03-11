@@ -15,6 +15,11 @@ interface UploadType {
     message: string;
 }
 
+interface ActionUploadType {
+    type: string;
+    payload: File;
+}
+
 declare interface StateProfileTypes {
     readonly currentUser: StateCurrentUserType | null;
     readonly accountInfo: StateAccountInfoType | null;
@@ -24,6 +29,9 @@ declare interface StateProfileTypes {
     readonly address: StateAddressType[] | null;
     readonly upload: UploadType;
     readonly storeBookList: StoreBookItemType[];
+    readonly orderAddressMap: {
+        [propsName: string]: StateOrderAddressType;
+    };
 }
 
 declare interface StateCurrentUserType {
@@ -137,7 +145,10 @@ declare interface ActionOrderType {
     };
 }
 
-declare interface ActionUploadType {
-    type: string;
-    payload: File;
+declare interface StateOrderAddressType {
+    post_code: number;
+    address: string;
+    phone: number;
+    order_id: string;
+    consignee: string;
 }

@@ -24,6 +24,7 @@ export const initialState: StateProfileTypes = {
         result: '',
     },
     storeBookList: [],
+    orderAddressMap: {},
 };
 
 export const profileReducer = (
@@ -112,6 +113,18 @@ export const profileReducer = (
         return {
             ...state,
             storeBookList: payload,
+        };
+    }
+
+    if (action.type === profileActions.QUERY_ADDRESS_BY_ORDER.SUCCESS) {
+        const {order_id} = action.payload as StateOrderAddressType;
+
+        return {
+            ...state,
+            orderAddressMap: {
+                ...state.orderAddressMap,
+                [order_id]: action.payload
+            }
         };
     }
 
