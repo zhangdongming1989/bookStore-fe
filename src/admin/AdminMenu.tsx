@@ -10,6 +10,14 @@ const profileRouterList = [
         key: 'index',
         path: '/admin',
     },
+    {
+        key: 'qr_code',
+        path: '/admin/qr_code',
+    },
+    {
+        key: 'book_address',
+        path: '/admin/book_address',
+    }
 ];
 
 interface MenuProps {
@@ -45,13 +53,19 @@ export default class AdminMenu extends React.Component<MenuProps, {}> {
     render() {
         return (
             <Menu
-                style={{ width: 256 }}
+                style={{ width: 200 }}
                 selectedKeys={this.state.selectedKey}
                 defaultOpenKeys={['index']}
                 mode="inline"
             >
-                <Menu.Item key="index">
+                <Menu.Item key="index" style={{width: '100%'}}>
                     <Link to="/admin">充值中心</Link>
+                </Menu.Item>
+                <Menu.Item key="qr_code" style={{width: '100%'}}>
+                    <Link to="/admin/qr_code">充值二维码</Link>
+                </Menu.Item>
+                <Menu.Item key="book_address" style={{width: '100%'}}>
+                    <Link to="/admin/book_address">按 ISBN 查询订单</Link>
                 </Menu.Item>
             </Menu>
         );

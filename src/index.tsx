@@ -36,7 +36,8 @@ const renderRoot = (currentUserState: CurrentUserType) => {
                 result: null,
             },
             storeBookList: [],
-            orderAddressMap: {}
+            orderAddressMap: {},
+            sellerList: [],
         },
     }
 

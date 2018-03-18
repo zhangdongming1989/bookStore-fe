@@ -1,9 +1,11 @@
 import { adminActions } from './actions';
+import { StateAdminType, StateBookAddress } from './types';
 
 // tslint:disable no-debugger
 
 export const initialState: StateAdminType = {
-    accountInfoList: {}
+    accountInfoList: {},
+    bookAddressList: [],
 };
 
 export const adminReducers = (
@@ -20,6 +22,13 @@ export const adminReducers = (
                 [name]: data
             },
         };
+    }
+    if (action.type === adminActions.GET_ISBN_BOOK_LIST.SUCCESS) {
+       const bookAddressList = payload as StateBookAddress[];
+       return {
+           ...state,
+           bookAddressList,
+       };
     }
 
     return state;

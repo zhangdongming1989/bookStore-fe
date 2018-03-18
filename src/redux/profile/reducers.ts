@@ -25,6 +25,7 @@ export const initialState: StateProfileTypes = {
     },
     storeBookList: [],
     orderAddressMap: {},
+    sellerList: [],
 };
 
 export const profileReducer = (
@@ -125,6 +126,13 @@ export const profileReducer = (
                 ...state.orderAddressMap,
                 [order_id]: action.payload
             }
+        };
+    }
+
+    if (action.type === profileActions.QUERY_ALL_SELLER_LIST.SUCCESS) {
+        return {
+            ...state,
+            sellerList: action.payload
         };
     }
 

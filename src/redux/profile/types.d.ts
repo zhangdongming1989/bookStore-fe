@@ -32,6 +32,7 @@ declare interface StateProfileTypes {
     readonly orderAddressMap: {
         [propsName: string]: StateOrderAddressType;
     };
+    readonly sellerList: SellerListType[];
 }
 
 declare interface StateCurrentUserType {
@@ -46,6 +47,16 @@ declare interface StateCurrentUserType {
     phone: string;
     qq: string;
     is_admin: boolean;
+}
+
+declare interface StateUserType {
+    username: string;
+    nickname: string;
+    realname: string;
+    gender: 'male' | 'female';
+    email: string;
+    phone: string;
+    qq: string;
 }
 
 declare interface StateAccountInfoType {
@@ -151,4 +162,9 @@ declare interface StateOrderAddressType {
     phone: number;
     order_id: string;
     consignee: string;
+}
+
+declare interface SellerListType {
+    nickname: string;
+    user_id: number;
 }
