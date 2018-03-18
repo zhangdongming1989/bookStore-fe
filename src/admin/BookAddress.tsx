@@ -56,7 +56,9 @@ class BookAddress extends React.Component<BookAddressProps> {
                             getFieldDecorator('time', {
                                 initialValue: [Moment(), Moment()]
                             })(
-                                <DatePicker.RangePicker />
+                                <DatePicker.RangePicker
+                                    allowClear={false}
+                                />
                             )
                         }
                     </Form.default.Item>

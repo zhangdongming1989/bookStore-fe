@@ -61,9 +61,6 @@ export default class AdminMenu extends React.Component<MenuProps, {}> {
                 <Menu.Item key="index" style={{width: '100%'}}>
                     <Link to="/admin">充值中心</Link>
                 </Menu.Item>
-                <Menu.Item key="qr_code" style={{width: '100%'}}>
-                    <Link to="/admin/qr_code">充值二维码</Link>
-                </Menu.Item>
                 <Menu.Item key="book_address" style={{width: '100%'}}>
                     <Link to="/admin/book_address">按 ISBN 查询订单</Link>
                 </Menu.Item>

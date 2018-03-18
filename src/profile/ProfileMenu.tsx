@@ -11,6 +11,10 @@ const profileRouterList = [
         path: '/profile',
     },
     {
+        key: 'qr_code',
+        path: '/profile/qr_code',
+    },
+    {
         key: 'buy_book_list',
         path: '/profile/buy/book_list',
     },
@@ -80,6 +84,9 @@ export default class BookList extends React.Component<MenuProps, {}> {
             >
                 <Menu.Item key="index">
                     <Link to="/profile">个人中心</Link>
+                </Menu.Item>
+                <Menu.Item key="qr_code">
+                    <Link to="/profile/qr_code">充值二维码</Link>
                 </Menu.Item>
                 <MenuItemGroup key="buy" title={<span>我是买家</span>}>
                     <Menu.Item key="buy_book_list"><Link to="/profile/buy/book_list">订单列表</Link></Menu.Item>
