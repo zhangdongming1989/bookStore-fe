@@ -9,10 +9,12 @@ import SellBookListPage from './SellBookList/BookListTabsPage';
 import UpLoad from './SellBookList/Upload';
 import StoreList from './SellBookList/StoreList';
 import SellerList from './SellerList';
+import QrCode from './QrCode';
 
 export default (
     <Route key="profile" path="profile" component={Profile}>
         <IndexRoute component={AccountInfo} />
+        <Route key="qrcode" path="qr_code" component={QrCode} />
         <Route key="buy" path="buy">
             <Route key="buy_book_list" path="book_list" component={BuyBookListPage} />
             <Route key="seller_list" path="seller_list" component={SellerList} />
