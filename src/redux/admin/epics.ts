@@ -3,10 +3,11 @@ import { ActionsObservable, combineEpics, Epic } from 'redux-observable';
 import { message } from 'antd';
 import { ajax } from 'rxjs/observable/dom/ajax';
 import { adminActions } from './actions';
-import { API_ROOT } from '../../constants';
+import { API_ROOT, DATE_FORMAT } from '../../constants';
 import { ActionType, EpicType } from '../types';
+import { ActionBookAddress, ActionChargeRequestType, ActionGetAccountType, StateBookAddress } from './types';
 
-// tslint:disable no-any
+// tslint:disable
 const loginEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
     action$
         .ofType(adminActions.GET_ACCOUNT.REQUEST)
@@ -54,4 +55,25 @@ const chargeEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<Actio
                 })
         );
 
-export default combineEpics(loginEpic, chargeEpic);
+const getBookAddressEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionBookAddress>) =>
+    action$
+        .ofType(adminActions.GET_ISBN_BOOK_LIST.REQUEST)
+        .mergeMap((action: ActionBookAddress) =>
+            ajax.post(`${API_ROOT}/order/query/ongoing`, {
+                isbn: action.payload.isbn,
+                fromDate: action.payload.time[0].format(DATE_FORMAT),
+                toDate: action.payload.time[1].format(DATE_FORMAT)
+            },{
+                'Content-Type': 'application/json',
+            })
+                .map((res) => {
+                    const resData =res.response.payload as {[propsName: string]: StateBookAddress}
+                    return {
+                        type: adminActions.GET_ISBN_BOOK_LIST.SUCCESS,
+                        payload: Object.values(resData)
+
+                    };
+                })
+        );
+
+export default combineEpics(loginEpic, chargeEpic, getBookAddressEpic);

@@ -9,6 +9,45 @@ interface StoreListProps {
     storeBookList: StoreBookItemType[];
 }
 
+export const columns: Table.ColumnProps<StoreBookItemType>[] = [
+    {
+        key: 'isbn',
+        title: 'ISBN',
+        dataIndex: 'isbn',
+        width: 200,
+    },
+    {
+        key: 'name',
+        title: '书名',
+        dataIndex: 'name',
+        width: 100,
+    },
+    {
+        key: 'author',
+        title: '作者',
+        dataIndex: 'author',
+        width: 100,
+    },
+    {
+        key: 'press',
+        title: '出版社',
+        dataIndex: 'press',
+        width: 200,
+    },
+    {
+        key: 'price',
+        title: '价格',
+        dataIndex: 'price',
+        width: 100,
+    },
+    {
+        key: 'quantity',
+        title: '数量',
+        dataIndex: 'quantity',
+        width: 100,
+    }
+];
+
 class StoreList extends React.Component<StoreListProps> {
     componentWillMount() {
         const { dispatch } = this.props;
@@ -17,44 +56,7 @@ class StoreList extends React.Component<StoreListProps> {
 
     render() {
         const {storeBookList} = this.props;
-        const columns: Table.ColumnProps<StoreBookItemType>[] = [
-            {
-                key: 'isbn',
-                title: 'ISBN',
-                dataIndex: 'isbn',
-                width: 200,
-            },
-            {
-                key: 'name',
-                title: '书名',
-                dataIndex: 'name',
-                width: 100,
-            },
-            {
-                key: 'author',
-                title: '作者',
-                dataIndex: 'author',
-                width: 100,
-            },
-            {
-                key: 'press',
-                title: '出版社',
-                dataIndex: 'press',
-                width: 200,
-            },
-            {
-                key: 'price',
-                title: '价格',
-                dataIndex: 'price',
-                width: 100,
-            },
-            {
-                key: 'quantity',
-                title: '数量',
-                dataIndex: 'quantity',
-                width: 100,
-            }
-        ];
+
         return (
             <Table.default
                 rowKey={(item: StoreBookItemType) => item.id}

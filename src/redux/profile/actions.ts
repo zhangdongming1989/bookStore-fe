@@ -62,6 +62,11 @@ export const profileActions = {
         REQUEST: 'QUERY_ADDRESS_BY_ORDER_REQUEST',
         SUCCESS: 'QUERY_ADDRESS_BY_ORDER_SUCCESS',
         FAIL: 'QUERY_ADDRESS_BY_ORDER_FAIL',
+    },
+    QUERY_ALL_SELLER_LIST: {
+        REQUEST: 'QUERY_ALL_SELLER_LIST_REQUEST',
+        SUCCESS: 'QUERY_ALL_SELLER_LIST_SUCCESS',
+        FAIL: 'QUERY_ALL_SELLER_LIST_FAIL',
     }
 };
 
@@ -162,5 +167,11 @@ export const requestAddressByOrder = (orderId: string) => {
     return {
         type: profileActions.QUERY_ADDRESS_BY_ORDER.REQUEST,
         payload: orderId,
+    };
+};
+
+export const queryAllSellerList = () => {
+    return {
+        type: profileActions.QUERY_ALL_SELLER_LIST.REQUEST,
     };
 };

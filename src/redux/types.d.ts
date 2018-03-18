@@ -1,5 +1,6 @@
 /// <reference path="./account/types.d.ts" />
 import { RouterState } from 'react-router-redux';
+import { StateAdminType } from './admin/types';
 
 declare interface ActionType {
     type: string;
