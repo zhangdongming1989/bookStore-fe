@@ -4,7 +4,7 @@ import { Table, Button, Modal } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
 // import { WrappedFormUtils } from 'antd/lib/form/Form';
 import BookListDetailModal from '../BookListDetailModal';
-import { requestBookListDetail, requestConfirmSent, requestAddressByOrder } from '../../redux/profile/actions';
+import { requestBookListDetail, requestAddressByOrder } from '../../redux/profile/actions';
 import { RootState } from '../../redux/types';
 
 // tslint:disable
@@ -36,11 +36,6 @@ class BookList extends React.Component<BookListProps, {}> {
         this.setState({selectedRecord: record})
         dispatch(requestBookListDetail(record.order_id))
         this.handleToggleModal()
-    }
-
-    confirmSent = (record: BookItemType) => {
-        const {dispatch} = this.props
-        dispatch(requestConfirmSent(record.order_id))
     }
 
     handleShowAddress = (record: BookItemType) => {
@@ -125,16 +120,6 @@ class BookList extends React.Component<BookListProps, {}> {
                             >
                                 订单书目
                             </Button>
-                            {
-                                !record.delivery_status &&
-                                <Button
-                                    onClick={() => {this.confirmSent(record)}}
-                                    size="small"
-                                    key="confirm"
-                                >
-                                    确认已发货
-                                </Button>
-                            }
                         </div>
                     )
                 })

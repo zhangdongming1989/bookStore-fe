@@ -1,5 +1,6 @@
 // import { ActionType } from '../types';
 import * as Moment from 'moment';
+import { BookAddressPayloadType } from './types';
 
 export const adminActions = {
     GET_ACCOUNT: {
@@ -16,7 +17,12 @@ export const adminActions = {
         REQUEST: 'GET_ISBN_BOOK_LIST_REQUEST',
         SUCCESS: 'GET_ISBN_BOOK_LIST_SUCCESS',
         FAIL: 'GET_ISBN_BOOK_LIST_FAIL',
-    }
+    },
+    CONFIRM_SENT: {
+        REQUEST: 'CONFIRM_SENT_REQUEST',
+        SUCCESS: 'CONFIRM_SENT_SUCCESS',
+        FAIL: 'CONFIRM_SENT_FAIL',
+    },
 };
 
 export const requestGetAccount = (name: string) => {
@@ -46,5 +52,15 @@ export const requestIsbnBookList = (isbn: string, time: [Moment.Moment, Moment.M
             isbn,
             time,
         }
+    };
+};
+
+export const requestConfirmSent = (orderId: string, requestParams: BookAddressPayloadType) => {
+    return {
+        type: adminActions.CONFIRM_SENT.REQUEST,
+        payload: {
+            orderId,
+            requestParams,
+        },
     };
 };

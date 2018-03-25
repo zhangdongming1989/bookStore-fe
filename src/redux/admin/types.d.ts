@@ -49,3 +49,16 @@ export interface StateBookAddress {
     post_code: string;
     phone: string;
 }
+
+export interface BookAddressPayloadType {
+    isbn: string;
+    time: [Moment.Moment, Moment.Moment];
+}
+
+export interface ActionRequestConfirmType {
+    type: string;
+    payload: {
+        orderId: string;
+        requestParams: BookAddressPayloadType;
+    };
+}
