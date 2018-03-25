@@ -8,6 +8,7 @@ import { requestIsbnBookList } from '../redux/admin/actions';
 import { RootState } from '../redux/types';
 import { StateBookAddress } from '../redux/admin/types';
 import ExportFile, { filenameCreator } from '../components/ExportFile/index';
+import { requestConfirmSent } from '../redux/admin/actions';
 
 interface BookAddressProps extends Form.FormComponentProps {
     dispatch: Dispatch<() => {}>;
@@ -79,6 +80,13 @@ class BookAddress extends React.Component<BookAddressProps> {
         );
     }
 
+    confirmSent = (record: TableDataProps) => {
+        const {dispatch, form} = this.props;
+        const {time, isbn} = form.getFieldsValue() as FormParamProps;
+        dispatch(requestIsbnBookList(isbn, time));
+        dispatch(requestConfirmSent(record.order_id, {time, isbn}));
+    }
+
     renderTable = () => {
         const bookAddressList = this.props.bookAddressList as TableDataProps[];
         const {time, isbn} = this.props.form.getFieldsValue() as FormParamProps;
@@ -123,6 +131,21 @@ class BookAddress extends React.Component<BookAddressProps> {
                 key: 'phone',
                 title: '电话',
                 dataIndex: 'phone',
+            },
+            {
+                key: 'operator',
+                title: '操作',
+                render: ((_, record: TableDataProps) => {
+                    return (
+                        <Button
+                            onClick={() => { this.confirmSent(record); }}
+                            size="small"
+                            key="confirm"
+                        >
+                            确认已发货
+                        </Button>
+                    );
+                })
             }
 
         ];

@@ -5,7 +5,10 @@ import { ajax } from 'rxjs/observable/dom/ajax';
 import { adminActions } from './actions';
 import { API_ROOT, DATE_FORMAT } from '../../constants';
 import { ActionType, EpicType } from '../types';
-import { ActionBookAddress, ActionChargeRequestType, ActionGetAccountType, StateBookAddress } from './types';
+import {
+    ActionBookAddress, ActionChargeRequestType, ActionGetAccountType, ActionRequestConfirmType,
+    StateBookAddress
+} from './types';
 
 // tslint:disable
 const loginEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
@@ -76,4 +79,17 @@ const getBookAddressEpic: Epic<ActionType, EpicType> = (action$: ActionsObservab
                 })
         );
 
-export default combineEpics(loginEpic, chargeEpic, getBookAddressEpic);
+const confirmSent: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionRequestConfirmType>) =>
+    action$
+        .ofType(adminActions.CONFIRM_SENT.REQUEST)
+        .mergeMap((action: ActionRequestConfirmType) => ajax.get(
+            `${API_ROOT}/order/delivering/${action.payload.orderId}`,
+            ).map(() => {
+                return {
+                    type: adminActions.GET_ISBN_BOOK_LIST.REQUEST,
+                    payload: {...action.payload.requestParams}
+                }
+            })
+        )
+
+export default combineEpics(loginEpic, chargeEpic, getBookAddressEpic, confirmSent);
