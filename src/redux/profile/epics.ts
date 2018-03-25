@@ -222,15 +222,6 @@ const confirmDeliver: Epic<ActionType, EpicType> = (action$: ActionsObservable<D
             )
         )
         .mapTo({type: profileActions.BOOKLIST.REQUEST, payload: {type: 'buy', status: 'selling'}});
-
-const confirmSent: Epic<ActionType, EpicType> = (action$: ActionsObservable<DeliverAction>) =>
-    action$
-        .ofType(profileActions.CONFIRM_SENT.REQUEST)
-        .mergeMap((action: DeliverAction) => ajax.get(
-            `${API_ROOT}/order/delivering/${action.payload.orderId}`,
-            )
-        )
-        .mapTo({type: profileActions.BOOKLIST.REQUEST, payload: {type: 'sell', status: 'selling'}});
 const getSellers: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
     action$
         .ofType(profileActions.QUERY_ALL_SELLER_LIST.REQUEST)
@@ -258,7 +249,6 @@ export default combineEpics(
     upload,
     storeBook,
     confirmDeliver,
-    confirmSent,
     queryAddressByOrder,
     getSellers,
 );

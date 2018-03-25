@@ -53,11 +53,6 @@ export const profileActions = {
         SUCCESS: 'CONFIRM_DELIVER_SUCCESS',
         FAIL: 'CONFIRM_DELIVER_FAIL',
     },
-    CONFIRM_SENT: {
-        REQUEST: 'CONFIRM_SENT_REQUEST',
-        SUCCESS: 'CONFIRM_SENT_SUCCESS',
-        FAIL: 'CONFIRM_SENT_FAIL',
-    },
     QUERY_ADDRESS_BY_ORDER: {
         REQUEST: 'QUERY_ADDRESS_BY_ORDER_REQUEST',
         SUCCESS: 'QUERY_ADDRESS_BY_ORDER_SUCCESS',
@@ -148,15 +143,6 @@ export const storeBookRequest = () => {
 export const requestConfirmOrder = (orderId: string) => {
     return {
         type: profileActions.CONFIRM_DELIVER.REQUEST,
-        payload: {
-            orderId,
-        },
-    };
-};
-
-export const requestConfirmSent = (orderId: string) => {
-    return {
-        type: profileActions.CONFIRM_SENT.REQUEST,
         payload: {
             orderId,
         },

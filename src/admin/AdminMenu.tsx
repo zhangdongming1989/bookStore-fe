@@ -17,6 +17,14 @@ const profileRouterList = [
     {
         key: 'book_address',
         path: '/admin/book_address',
+    },
+    {
+        key: 'book_list',
+        path: '/admin/book_list',
+    },
+    {
+        key: 'seller_list',
+        path: '/admin/seller_list'
     }
 ];
 
@@ -62,7 +70,13 @@ export default class AdminMenu extends React.Component<MenuProps, {}> {
                     <Link to="/admin">充值中心</Link>
                 </Menu.Item>
                 <Menu.Item key="book_address" style={{width: '100%'}}>
-                    <Link to="/admin/book_address">按 ISBN 查询订单</Link>
+                    <Link to="/admin/book_address">分拣</Link>
+                </Menu.Item>
+                <Menu.Item key="book_list" style={{width: '100%'}}>
+                    <Link to="/admin/book_list">订单管理</Link>
+                </Menu.Item>
+                <Menu.Item key="seller_list" style={{width: '100%'}}>
+                    <Link to="/admin/seller_list">卖家列表</Link>
                 </Menu.Item>
             </Menu>
         );

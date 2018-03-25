@@ -1,5 +1,6 @@
 // import { ActionType } from '../types';
 import * as Moment from 'moment';
+import { BookAddressPayloadType, BookListRequestParam } from './types';
 
 export const adminActions = {
     GET_ACCOUNT: {
@@ -16,6 +17,26 @@ export const adminActions = {
         REQUEST: 'GET_ISBN_BOOK_LIST_REQUEST',
         SUCCESS: 'GET_ISBN_BOOK_LIST_SUCCESS',
         FAIL: 'GET_ISBN_BOOK_LIST_FAIL',
+    },
+    CONFIRM_SENT: {
+        REQUEST: 'CONFIRM_SENT_REQUEST',
+        SUCCESS: 'CONFIRM_SENT_SUCCESS',
+        FAIL: 'CONFIRM_SENT_FAIL',
+    },
+    CHANGE_DELIVERIED_QUANTITY: {
+        REQUEST: 'ADMIN_CHANGE_DELIVERIED_QUANTITY_REQUEST',
+        SUCCESS: 'ADMIN_CHANGE_DELIVERIED_QUANTITY_SUCCESS',
+        FAIL: 'ADMIN_CHANGE_DELIVERIED_QUANTITY_FAIL',
+    },
+    BOOKLIST: {
+        REQUEST: 'ADMIN_BOOKLIST_REQUEST',
+        SUCCESS: 'ADMIN_BOOKLIST_SUCCESS',
+        FAIL: 'ADMIN_BOOKLIST_FAIL',
+    },
+    SELLER_LIST: {
+        REQUEST: 'ADMIN_SELLERLIST_REQUEST',
+        SUCCESS: 'ADMIN_SELLERLIST_SUCCESS',
+        FAIL: 'ADMIN_SELLERLIST_SUCCESS',
     }
 };
 
@@ -46,5 +67,41 @@ export const requestIsbnBookList = (isbn: string, time: [Moment.Moment, Moment.M
             isbn,
             time,
         }
+    };
+};
+
+export const requestConfirmSent = (orderId: string, requestParams: BookAddressPayloadType) => {
+    return {
+        type: adminActions.CONFIRM_SENT.REQUEST,
+        payload: {
+            orderId,
+            requestParams,
+        },
+    };
+};
+
+export const requestChangeDeliveriedQuantity =
+    (userId: string, orderId: string, quantity: number, requestParams: BookAddressPayloadType ) => {
+    return {
+        type: adminActions.CHANGE_DELIVERIED_QUANTITY.REQUEST,
+        payload: {
+            userId,
+            orderId,
+            quantity,
+            requestParams,
+        }
+    };
+};
+
+export const requestBookList = (params: BookListRequestParam) => {
+    return {
+        type: adminActions.BOOKLIST.REQUEST,
+        payload: params,
+    };
+};
+
+export const requestSellerList = () => {
+    return {
+        type: adminActions.SELLER_LIST.REQUEST,
     };
 };

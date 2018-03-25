@@ -1,30 +1,40 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Table, Button, Modal } from 'antd';
+import { Table, Button } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
 // import { WrappedFormUtils } from 'antd/lib/form/Form';
+import * as Moment from 'moment';
 import BookListDetailModal from '../BookListDetailModal';
-import { requestBookListDetail, requestAddressByOrder } from '../../redux/profile/actions';
-import { RootState } from '../../redux/types';
+import { requestBookListDetail } from '../../redux/profile/actions';
+import ExportFile, { filenameCreator } from '../../components/ExportFile';
 
 // tslint:disable
 
 interface BookListProps {
     bookList: BookListType;
     dispatch: Dispatch<() => {}>;
+    time: [Moment.Moment, Moment.Moment]
     isFinished: boolean;
-    orderAddressMap: {
-        [propsName: string]: StateOrderAddressType;
-    };
+}
+
+const mapStatusCodeToText = (list:  BookListType) => {
+    const orderTypeMap = {0: '未发货', 1: '已发货'}
+    const payTypeMap = {0: '未发货', 1: '已发货'}
+    const deliverTypeMap = {0: '未付款', 1: '已付款'}
+    return list.map(item => {
+        return {
+            ...item,
+            order_status: orderTypeMap[item.order_status] || '未知',
+            pay_status: payTypeMap[item.pay_status] || '未知',
+            delivery_status: deliverTypeMap[item.delivery_status] || '未知',
+        }
+    })
 }
 
 class BookList extends React.Component<BookListProps, {}> {
-
     state= {
         detailModalVisible: false,
         selectedRecord: null,
-        showAddressOrderId: '',
-        showAddressModal: false,
     }
 
     handleToggleModal = () => {
@@ -38,20 +48,9 @@ class BookList extends React.Component<BookListProps, {}> {
         this.handleToggleModal()
     }
 
-    handleShowAddress = (record: BookItemType) => {
-        const {dispatch} = this.props
-        dispatch(requestAddressByOrder(record.order_id))
-        this.setState({showAddressOrderId: record.order_id})
-        this.handleToggleAddressModal()
-    }
-
-    handleToggleAddressModal = () => {
-        this.setState({showAddressModal: !this.state.showAddressModal})
-    }
     render() {
-        const { bookList = [], orderAddressMap} = this.props;
-        const {selectedRecord, detailModalVisible, showAddressModal, showAddressOrderId} = this.state
-        const addressInfo = orderAddressMap[showAddressOrderId] || {}
+        const { bookList = [] , time} = this.props;
+        const {selectedRecord, detailModalVisible} = this.state
         const columns: ColumnProps<BookItemType>[] = [
             {
                 key: 'order_id',
@@ -107,13 +106,6 @@ class BookList extends React.Component<BookListProps, {}> {
                     return (
                         <div style={{display: 'flex'}}>
                             <Button
-                                onClick={() => {this.handleShowAddress(record)}}
-                                size="small"
-                                key="address_info"
-                            >
-                                查看收货人信息
-                            </Button>
-                            <Button
                                 onClick={() => {this.handleClick(record)}}
                                 size="small"
                                 key="show_list"
@@ -137,34 +129,15 @@ class BookList extends React.Component<BookListProps, {}> {
                     onClose={this.handleToggleModal}
                     record={selectedRecord}
                 />
-                <Modal
-                    visible={showAddressModal}
-                    title={`订单${addressInfo.order_id}`}
-                    onCancel={this.handleToggleAddressModal}
-                    onOk={this.handleToggleAddressModal}
-                >
-                    <div>
-                        {
-                            addressInfo.consignee ?
-                                <div>
-                                    <div>收货人：{addressInfo.consignee}</div>
-                                    <div>地址：{addressInfo.address}</div>
-                                    <div>电话：{addressInfo.phone}</div>
-                                    <div>邮编: {addressInfo.post_code}</div>
-                                </div> :
-                                <div>正在查询。。。</div>
-                        }
-                    </div>
-                </Modal>
+                <ExportFile
+                    data={mapStatusCodeToText(bookList)}
+                    columns={columns}
+                    filename={filenameCreator('book_list', '','', time)}
+                    disabled={!bookList.length}
+                />
             </div>
         );
     }
 }
 
-const mapStateToProps = (state:RootState) => {
-    return {
-        orderAddressMap: state.profile.orderAddressMap
-    }
-}
-
-export default connect(mapStateToProps)(BookList);
+export default connect()(BookList);
