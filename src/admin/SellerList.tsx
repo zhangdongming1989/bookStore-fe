@@ -38,7 +38,7 @@ class SellerList extends React.Component<SellerListProps> {
         return (
             <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
                 <Table.default
-                    style={{width: '100%'}}
+                    style={{width: 400}}
                     dataSource={sellerList}
                     columns={columns}
                 />
