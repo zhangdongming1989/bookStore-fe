@@ -6,9 +6,18 @@ import { adminActions } from './actions';
 import { API_ROOT, DATE_FORMAT } from '../../constants';
 import { ActionType, EpicType } from '../types';
 import {
-    ActionBookAddress, ActionChargeRequestType, ActionGetAccountType, ActionRequestConfirmType,
+    ActionBookAddress, ActionBookListRequestType,
+    ActionChangeDeliverdCountType,
+    ActionChargeRequestType,
+    ActionGetAccountType,
+    ActionRequestConfirmType,
     StateBookAddress
 } from './types';
+
+const orderQueryMap = {
+    selling: '/order/admin/query/ongoing',
+    sold: '/order/admin/query/finished',
+};
 
 // tslint:disable
 const loginEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
@@ -79,7 +88,7 @@ const getBookAddressEpic: Epic<ActionType, EpicType> = (action$: ActionsObservab
                 })
         );
 
-const confirmSent: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionRequestConfirmType>) =>
+const confirmSentEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionRequestConfirmType>) =>
     action$
         .ofType(adminActions.CONFIRM_SENT.REQUEST)
         .mergeMap((action: ActionRequestConfirmType) => ajax.get(
@@ -92,4 +101,60 @@ const confirmSent: Epic<ActionType, EpicType> = (action$: ActionsObservable<Acti
             })
         )
 
-export default combineEpics(loginEpic, chargeEpic, getBookAddressEpic, confirmSent);
+const changeDeliveriedCountEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionChangeDeliverdCountType>) =>
+    action$
+        .ofType(adminActions.CHANGE_DELIVERIED_QUANTITY.REQUEST)
+        .mergeMap((action: ActionChangeDeliverdCountType) => {
+            const {orderId, quantity, userId} = action.payload
+            return ajax.get(
+                `${API_ROOT}/order/detail/deliveried/${userId}/${orderId}/${quantity}`,
+            ).map(() => {
+                return {
+                    type: adminActions.GET_ISBN_BOOK_LIST.REQUEST,
+                    payload: {...action.payload.requestParams}
+                }
+            })
+        })
+
+const queryBookList: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionBookListRequestType>) =>
+    action$
+        .ofType(adminActions.BOOKLIST.REQUEST)
+        .mergeMap((action: ActionBookListRequestType) => {
+            const {status, fromDate, toDate, nickname} = action.payload
+            return ajax.post(
+                    `${API_ROOT}${orderQueryMap[status]}`,
+                    {
+                        fromDate,
+                        toDate,
+                        nickname,
+                    },
+                    {
+                        'Content-Type': 'application/json',
+                    }
+                )
+                    .map((res: AjaxResponse) => {
+                        return {
+                            type: adminActions.BOOKLIST.SUCCESS,
+                            payload: {
+                                status: action.payload.status,
+                                value: Object.values(res.response.payload)
+                            }
+                        }
+                    })
+        })
+
+const querySellerList: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
+    action$
+        .ofType(adminActions.SELLER_LIST.REQUEST)
+        .mergeMap(() => {
+            return ajax.get(
+                `${API_ROOT}/user/query/all`,
+            ).map((res: AjaxResponse) => {
+                return {
+                    type: adminActions.SELLER_LIST.SUCCESS,
+                    payload: Object.values(res.response.payload)
+                }
+            })
+        })
+
+export default combineEpics(loginEpic, chargeEpic, getBookAddressEpic, confirmSentEpic, changeDeliveriedCountEpic, queryBookList, querySellerList);

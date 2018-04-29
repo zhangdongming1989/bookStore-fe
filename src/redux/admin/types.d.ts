@@ -11,6 +11,11 @@ export interface StateAdminType {
         [propsName: string]: StateAccountInfoType
     };
     bookAddressList: StateBookAddress[];
+    bookList: {
+        selling: BookListType;
+        sold: BookListType;
+    };
+    sellerList: SellerItem[];
 }
 
 export interface ActionChargeRequestType {
@@ -61,4 +66,32 @@ export interface ActionRequestConfirmType {
         orderId: string;
         requestParams: BookAddressPayloadType;
     };
+}
+
+export interface ActionChangeDeliverdCountType {
+    type: string;
+    payload: {
+        userId: string;
+        orderId: string;
+        quantity: number;
+        requestParams: BookAddressPayloadType;
+    };
+}
+
+export interface BookListRequestParam {
+    fromDate: string;
+    toDate: string;
+    nickname?: string;
+    orderId?: string;
+    status: ActionOrderStatus;
+}
+
+export interface ActionBookListRequestType {
+    type: string;
+    payload: BookListRequestParam;
+}
+
+export interface SellerItem {
+    user_id: string;
+    nickname: string;
 }

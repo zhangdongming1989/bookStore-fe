@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Input, Button, DatePicker } from 'antd';
+import { Input, Button, DatePicker, InputNumber } from 'antd';
 import * as Form from 'antd/es/form';
 import * as Table from 'antd/es/table';
 import * as Moment from 'moment';
@@ -8,7 +8,10 @@ import { requestIsbnBookList } from '../redux/admin/actions';
 import { RootState } from '../redux/types';
 import { StateBookAddress } from '../redux/admin/types';
 import ExportFile, { filenameCreator } from '../components/ExportFile/index';
-import { requestConfirmSent } from '../redux/admin/actions';
+import {
+    // requestConfirmSent,
+    requestChangeDeliveriedQuantity,
+} from '../redux/admin/actions';
 
 interface BookAddressProps extends Form.FormComponentProps {
     dispatch: Dispatch<() => {}>;
@@ -29,6 +32,8 @@ interface TableDataProps {
     consignee: string;
     post_code: string;
     phone: string;
+    deliveried_quantity: number;
+    user_id: number;
 }
 
 class BookAddress extends React.Component<BookAddressProps> {
@@ -80,11 +85,17 @@ class BookAddress extends React.Component<BookAddressProps> {
         );
     }
 
-    confirmSent = (record: TableDataProps) => {
+    // confirmSent = (record: TableDataProps) => {
+    //     const {dispatch, form} = this.props;
+    //     const {time, isbn} = form.getFieldsValue() as FormParamProps;
+    //     dispatch(requestIsbnBookList(isbn, time));
+    //     dispatch(requestConfirmSent(record.order_id, {time, isbn}));
+    // }
+    onChangeQuantity = (val: number, record: TableDataProps) => {
         const {dispatch, form} = this.props;
         const {time, isbn} = form.getFieldsValue() as FormParamProps;
-        dispatch(requestIsbnBookList(isbn, time));
-        dispatch(requestConfirmSent(record.order_id, {time, isbn}));
+        const {order_id, user_id} = record;
+        dispatch(requestChangeDeliveriedQuantity(user_id.toString(), order_id, val, {time, isbn}));
     }
 
     renderTable = () => {
@@ -136,14 +147,17 @@ class BookAddress extends React.Component<BookAddressProps> {
                 key: 'operator',
                 title: '操作',
                 render: ((_, record: TableDataProps) => {
+                    const {order_quantity, deliveried_quantity} = record;
                     return (
-                        <Button
-                            onClick={() => { this.confirmSent(record); }}
-                            size="small"
-                            key="confirm"
-                        >
-                            确认已发货
-                        </Button>
+                        <div>
+                            <InputNumber
+                                min={deliveried_quantity}
+                                max={order_quantity}
+                                value={deliveried_quantity}
+                                onChange={(val: number) => this.onChangeQuantity(val, record)}
+                            />
+                            <Button onClick={() => this.onChangeQuantity(order_quantity, record)}>分拣全部</Button>
+                        </div>
                     );
                 })
             }

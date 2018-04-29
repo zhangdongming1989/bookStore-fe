@@ -1,11 +1,16 @@
 import { adminActions } from './actions';
-import { StateAdminType, StateBookAddress } from './types';
+import { SellerItem, StateAdminType, StateBookAddress } from './types';
 
 // tslint:disable no-debugger
 
 export const initialState: StateAdminType = {
     accountInfoList: {},
     bookAddressList: [],
+    bookList: {
+        selling: [],
+        sold: [],
+    },
+    sellerList: [],
 };
 
 export const adminReducers = (
@@ -29,6 +34,34 @@ export const adminReducers = (
            ...state,
            bookAddressList,
        };
+    }
+
+    if (action.type === adminActions.BOOKLIST.SUCCESS) {
+        // tslint:disable-next-line
+        const { payload } = action as
+            {
+                type: string,
+                payload: {status: ActionOrderStatus, value: BookListType}
+            };
+        return {
+            ...state,
+            bookList: {
+                ...state.bookList || {},
+                [payload.status]: payload.value,
+            }
+        };
+    }
+
+    if (action.type === adminActions.SELLER_LIST.SUCCESS) {
+      // tslint:disable-next-line
+        const { payload } = action as {
+            type: string;
+            payload: SellerItem[]
+        };
+        return {
+            ...state,
+            sellerList: payload
+        };
     }
 
     return state;
