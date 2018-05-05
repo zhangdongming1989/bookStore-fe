@@ -1,6 +1,6 @@
 // import { ActionType } from '../types';
 import * as Moment from 'moment';
-import { BookAddressPayloadType, BookListRequestParam } from './types';
+import { BookAddressPayloadType, BookListRequestParam, ResetPassword } from './types';
 
 export const adminActions = {
     GET_ACCOUNT: {
@@ -37,6 +37,11 @@ export const adminActions = {
         REQUEST: 'ADMIN_SELLERLIST_REQUEST',
         SUCCESS: 'ADMIN_SELLERLIST_SUCCESS',
         FAIL: 'ADMIN_SELLERLIST_SUCCESS',
+    },
+    RESET_PASSWORD: {
+        REQUEST: 'ADMIN_RESET_PASSWORD_REQUEST',
+        SUCCESS: 'ADMIN_RESET_PASSWORD_SUCCESS',
+        FAIL: 'ADMIN_RESET_PASSWORD_FAIL',
     }
 };
 
@@ -103,5 +108,12 @@ export const requestBookList = (params: BookListRequestParam) => {
 export const requestSellerList = () => {
     return {
         type: adminActions.SELLER_LIST.REQUEST,
+    };
+};
+
+export const requestResetPassword = (params: ResetPassword) => {
+    return {
+        type: adminActions.RESET_PASSWORD.REQUEST,
+        payload: params
     };
 };

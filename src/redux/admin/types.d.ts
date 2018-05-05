@@ -95,3 +95,13 @@ export interface SellerItem {
     user_id: string;
     nickname: string;
 }
+
+export interface ResetPassword {
+    username: string;
+    password: string;
+}
+
+export interface ResetPasswordAction {
+    type: string;
+    payload: ResetPassword;
+}

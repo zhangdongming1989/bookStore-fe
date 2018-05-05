@@ -5,6 +5,7 @@ import Recharge from './Recharge/Recharge';
 import BookAddress from './BookAddress';
 import BookListTabsPage from './BookList/BookListTabsPage';
 import SellerList from './SellerList';
+import ResetPassword from './ResetPassword';
 
 export default (
     <Route key="admin" path="admin" component={AdminLayout}>
@@ -12,5 +13,6 @@ export default (
         <Route key="book_address" path="book_address" component={BookAddress} />
         <Route key="sell_book_list" path="book_list" component={BookListTabsPage}/>
         <Route key="seller_list" path="seller_list" component={SellerList} />
+        <Route key="reset_password" path="reset_password" component={ResetPassword} />
     </Route>
 );

@@ -34,6 +34,7 @@ interface TableDataProps {
     phone: string;
     deliveried_quantity: number;
     user_id: number;
+    supplier_id: string;
 }
 
 class BookAddress extends React.Component<BookAddressProps> {
@@ -92,10 +93,11 @@ class BookAddress extends React.Component<BookAddressProps> {
     //     dispatch(requestConfirmSent(record.order_id, {time, isbn}));
     // }
     onChangeQuantity = (val: number, record: TableDataProps) => {
+        //tslint:disable
         const {dispatch, form} = this.props;
         const {time, isbn} = form.getFieldsValue() as FormParamProps;
-        const {order_id, user_id} = record;
-        dispatch(requestChangeDeliveriedQuantity(user_id.toString(), order_id, val, {time, isbn}));
+        const {order_id, supplier_id} = record;
+        dispatch(requestChangeDeliveriedQuantity(supplier_id.toString(), order_id, val, {time, isbn}));
     }
 
     renderTable = () => {

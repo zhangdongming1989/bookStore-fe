@@ -10,7 +10,7 @@ import {
     ActionChangeDeliverdCountType,
     ActionChargeRequestType,
     ActionGetAccountType,
-    ActionRequestConfirmType,
+    ActionRequestConfirmType, ResetPasswordAction,
     StateBookAddress
 } from './types';
 
@@ -157,4 +157,27 @@ const querySellerList: Epic<ActionType, EpicType> = (action$: ActionsObservable<
             })
         })
 
-export default combineEpics(loginEpic, chargeEpic, getBookAddressEpic, confirmSentEpic, changeDeliveriedCountEpic, queryBookList, querySellerList);
+const requestResetPassword: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionType>) =>
+    action$
+        .ofType(adminActions.RESET_PASSWORD.REQUEST)
+        .mergeMap((action: ResetPasswordAction) => {
+            return ajax.post(
+                `${API_ROOT}/user/password/update_by_name`,
+                action.payload,
+            ).catch(() => {
+                message.error('修改密码失败！')
+                return Observable.of({
+                    type: adminActions.RESET_PASSWORD.FAIL,
+                })
+            }).
+            map((res: AjaxResponse) => {
+                if(res.status === 200) {
+                    message.success('修改密码成功！')
+                    return {type: adminActions.RESET_PASSWORD.SUCCESS};
+                }
+                return {type: adminActions.RESET_PASSWORD.FAIL}
+            })
+        })
+
+export default combineEpics(loginEpic, chargeEpic, getBookAddressEpic,
+    confirmSentEpic, changeDeliveriedCountEpic, queryBookList, querySellerList, requestResetPassword);
