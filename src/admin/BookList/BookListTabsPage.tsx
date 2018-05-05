@@ -79,7 +79,7 @@ class BookListTabsPage extends React.Component<BookListTabsPageProps> {
         const time = form.getFieldValue('time') as [Moment.Moment, Moment.Moment];
 
         return (
-            <div>
+            <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
                 {this.renderSearch()}
                 {
                     form.getFieldDecorator('status', {

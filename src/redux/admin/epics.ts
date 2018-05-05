@@ -126,7 +126,7 @@ const queryBookList: Epic<ActionType, EpicType> = (action$: ActionsObservable<Ac
                     {
                         fromDate,
                         toDate,
-                        nickname,
+                        nickName: nickname,
                     },
                     {
                         'Content-Type': 'application/json',
@@ -164,6 +164,9 @@ const requestResetPassword: Epic<ActionType, EpicType> = (action$: ActionsObserv
             return ajax.post(
                 `${API_ROOT}/user/password/update_by_name`,
                 action.payload,
+                {
+                    'Content-Type': 'application/json',
+                },
             ).catch(() => {
                 message.error('修改密码失败！')
                 return Observable.of({
