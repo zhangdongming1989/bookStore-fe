@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Form from 'antd/es/form';
-import { Input } from 'antd';
+import { Input, notification } from 'antd';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { formOptions } from '../config/formConstants';
@@ -16,11 +16,15 @@ class ResetPassword extends React.Component<ResetPasswordProps> {
             evt.preventDefault();
         }
         const {form, dispatch} = this.props;
-        const { username, password } =
-            form.getFieldsValue() as {username: string; password: string; };
+        const { username, password, reset_password } =
+            form.getFieldsValue() as {username: string; password: string; reset_password: string};
         form.validateFields(err => {
             if (!err) {
-                dispatch(requestResetPassword({username, password}));
+                if (password !== reset_password) {
+                    return notification.error({message: '两次输入密码不同', description: '请检查后重试'});
+                } else {
+                    dispatch(requestResetPassword({username, password}));
+                }
             }
         });
     }
@@ -71,7 +75,7 @@ class ResetPassword extends React.Component<ResetPasswordProps> {
                     style={{display: 'flex', marginTop: 10, marginLeft: -100}}
                 >
                     {
-                        getFieldDecorator('password', {
+                        getFieldDecorator('reset_password', {
                             rules: [
                                 formOptions.required,
                             ]

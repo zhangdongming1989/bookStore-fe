@@ -164,15 +164,18 @@ const requestResetPassword: Epic<ActionType, EpicType> = (action$: ActionsObserv
             return ajax.post(
                 `${API_ROOT}/user/password/update_by_name`,
                 action.payload,
-            ).map((res: AjaxResponse) => {
+            ).catch(() => {
+                message.error('修改密码失败！')
+                return Observable.of({
+                    type: adminActions.RESET_PASSWORD.FAIL,
+                })
+            }).
+            map((res: AjaxResponse) => {
                 if(res.status === 200) {
                     message.success('修改密码成功！')
                     return {type: adminActions.RESET_PASSWORD.SUCCESS};
                 }
-                message.error('修改密码失败！')
-                return {
-                    type: adminActions.RESET_PASSWORD.FAIL,
-                }
+                return {type: adminActions.RESET_PASSWORD.FAIL}
             })
         })
 
