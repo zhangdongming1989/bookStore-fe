@@ -25,6 +25,10 @@ const profileRouterList = [
     {
         key: 'seller_list',
         path: '/admin/seller_list'
+    },
+    {
+        key: 'modify_password',
+        path: '/admin/reset_password'
     }
 ];
 
@@ -77,6 +81,9 @@ export default class AdminMenu extends React.Component<MenuProps, {}> {
                 </Menu.Item>
                 <Menu.Item key="seller_list" style={{width: '100%'}}>
                     <Link to="/admin/seller_list">卖家列表</Link>
+                </Menu.Item>
+                <Menu.Item key="modify_password" style={{width: '100%'}}>
+                    <Link to="/admin/reset_password">修改用户密码</Link>
                 </Menu.Item>
             </Menu>
         );
