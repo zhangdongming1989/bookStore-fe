@@ -18,7 +18,18 @@ interface BookListTabsPageProps extends Form.FormComponentProps {
     };
 }
 
-class BookListTabsPage extends React.Component<BookListTabsPageProps> {
+interface BookListTabsPageState {
+    time: Moment.Moment[];
+    nickname: string;
+}
+
+class BookListTabsPage extends React.Component<BookListTabsPageProps, BookListTabsPageState> {
+
+    state = {
+        time: [Moment(), Moment()],
+        nickname: '',
+    };
+
     handleSubmit = (evt: React.FormEvent<HTMLFormElement> | null, ChangeStatus: ActionOrderStatus = 'selling') => {
         if (evt) {
             evt.preventDefault();
@@ -26,6 +37,7 @@ class BookListTabsPage extends React.Component<BookListTabsPageProps> {
         const {dispatch, form} = this.props;
         const { time, nickname, status } = form.getFieldsValue() as
             {time: [Moment.Moment, Moment.Moment], nickname: string, status: ActionOrderStatus};
+        this.setState({time, nickname});
         dispatch(requestBookList({
             fromDate: time[0].format(DATE_FORMAT),
             toDate: time[1].format(DATE_FORMAT),
@@ -76,7 +88,7 @@ class BookListTabsPage extends React.Component<BookListTabsPageProps> {
     render() {
         const {bookList, form} = this.props;
         const {selling: sellingList, sold: soldList} = bookList;
-        const time = form.getFieldValue('time') as [Moment.Moment, Moment.Moment];
+        const {time, nickname} = this.state;
 
         return (
             <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
@@ -89,10 +101,10 @@ class BookListTabsPage extends React.Component<BookListTabsPageProps> {
                             onChange={(key: ActionOrderStatus) => this.handleSubmit(null, key)}
                         >
                             <TabPane tab="处理中" key="selling">
-                                <BookList bookList={sellingList} isFinished={false} time={time} />
+                                <BookList bookList={sellingList} isFinished={false} time={time} nickname={nickname} />
                             </TabPane>
                             <TabPane tab="已完成" key="sold">
-                                <BookList bookList={soldList} isFinished={true} time={time} />
+                                <BookList bookList={soldList} isFinished={true} time={time} nickname={nickname} />
                             </TabPane>
                             {/*<TabPane tab=""><BookList bookList={[]} /></TabPane>*/}
                         </Tabs>

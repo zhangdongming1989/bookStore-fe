@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { Table, Button } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
+import { requestConfirmSent } from '../../redux/admin/actions';
 // import { WrappedFormUtils } from 'antd/lib/form/Form';
 import * as Moment from 'moment';
 import BookListDetailModal from '../BookListDetailModal';
@@ -13,8 +14,9 @@ import ExportFile, { filenameCreator } from '../../components/ExportFile';
 interface BookListProps {
     bookList: BookListType;
     dispatch: Dispatch<() => {}>;
-    time: [Moment.Moment, Moment.Moment]
+    time: Moment.Moment[]
     isFinished: boolean;
+    nickname: string;
 }
 
 const mapStatusCodeToText = (list:  BookListType) => {
@@ -48,9 +50,16 @@ class BookList extends React.Component<BookListProps, {}> {
         this.handleToggleModal()
     }
 
+    handleConfirmSent = (record: BookItemType) => {
+        const {dispatch, nickname } = this.props
+        const time = this.props.time as [Moment.Moment, Moment.Moment]
+        dispatch(requestConfirmSent(record.order_id, {time, nickname}))
+    }
+
     render() {
-        const { bookList = [] , time} = this.props;
+        const { bookList = []} = this.props;
         const {selectedRecord, detailModalVisible} = this.state
+        const time = this.props.time as [Moment.Moment, Moment.Moment]
         const columns: ColumnProps<BookItemType>[] = [
             {
                 key: 'order_id',
@@ -103,6 +112,7 @@ class BookList extends React.Component<BookListProps, {}> {
                 key: 'operator',
                 title: '操作',
                 render: ((_, record) => {
+                    const {delivery_status} = record
                     return (
                         <div style={{display: 'flex'}}>
                             <Button
@@ -112,6 +122,16 @@ class BookList extends React.Component<BookListProps, {}> {
                             >
                                 订单书目
                             </Button>
+                            {
+                                Number(delivery_status) === 0 &&
+                                <Button
+                                    onClick={() => {this.handleConfirmSent(record)}}
+                                    size="small"
+                                    key="confirm_sent"
+                                >
+                                    确认发货
+                                </Button>
+                            }
                         </div>
                     )
                 })

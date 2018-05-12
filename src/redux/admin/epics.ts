@@ -10,7 +10,8 @@ import {
     ActionChangeDeliverdCountType,
     ActionChargeRequestType,
     ActionGetAccountType,
-    ActionRequestConfirmType, ResetPasswordAction,
+    ConfirmSentParamAction,
+    ResetPasswordAction,
     StateBookAddress
 } from './types';
 
@@ -83,20 +84,25 @@ const getBookAddressEpic: Epic<ActionType, EpicType> = (action$: ActionsObservab
                     return {
                         type: adminActions.GET_ISBN_BOOK_LIST.SUCCESS,
                         payload: Object.values(resData)
-
                     };
                 })
         );
 
-const confirmSentEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<ActionRequestConfirmType>) =>
+const confirmSentEpic: Epic<ActionType, EpicType> = (action$: ActionsObservable<ConfirmSentParamAction>) =>
     action$
         .ofType(adminActions.CONFIRM_SENT.REQUEST)
-        .mergeMap((action: ActionRequestConfirmType) => ajax.get(
-            `${API_ROOT}/order/delivering/${action.payload.orderId}`,
+        .mergeMap((action: ConfirmSentParamAction) => ajax.get(
+            `${API_ROOT}/order/delivering/${action.payload.order_id}`,
             ).map(() => {
+                const {time, nickname} = action.payload.requestParams
                 return {
-                    type: adminActions.GET_ISBN_BOOK_LIST.REQUEST,
-                    payload: {...action.payload.requestParams}
+                    type: adminActions.BOOKLIST.REQUEST,
+                    payload: {
+                        fromDate: time[0].format(DATE_FORMAT),
+                        toDate: time[1].format(DATE_FORMAT),
+                        nickname,
+                        status: 'selling',
+                    }
                 }
             })
         )
