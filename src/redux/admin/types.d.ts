@@ -62,10 +62,7 @@ export interface BookAddressPayloadType {
 
 export interface ActionRequestConfirmType {
     type: string;
-    payload: {
-        orderId: string;
-        requestParams: BookAddressPayloadType;
-    };
+    payload: string;
 }
 
 export interface ActionChangeDeliverdCountType {
@@ -104,4 +101,17 @@ export interface ResetPassword {
 export interface ResetPasswordAction {
     type: string;
     payload: ResetPassword;
+}
+
+export interface ConfirmSentParamType {
+    nickname: string;
+    time: [Moment.Moment, Moment.Moment];
+}
+
+export interface ConfirmSentParamAction {
+    type: string;
+    payload: {
+        order_id: string;
+        requestParams: ConfirmSentParamType
+    };
 }

@@ -1,6 +1,11 @@
 // import { ActionType } from '../types';
 import * as Moment from 'moment';
-import { BookAddressPayloadType, BookListRequestParam, ResetPassword } from './types';
+import {
+    BookAddressPayloadType,
+    BookListRequestParam,
+    ConfirmSentParamType,
+    ResetPassword
+} from './types';
 
 export const adminActions = {
     GET_ACCOUNT: {
@@ -75,11 +80,11 @@ export const requestIsbnBookList = (isbn: string, time: [Moment.Moment, Moment.M
     };
 };
 
-export const requestConfirmSent = (orderId: string, requestParams: BookAddressPayloadType) => {
+export const requestConfirmSent = (orderId: string, requestParams: ConfirmSentParamType) => {
     return {
         type: adminActions.CONFIRM_SENT.REQUEST,
         payload: {
-            orderId,
+            order_id: orderId,
             requestParams,
         },
     };
