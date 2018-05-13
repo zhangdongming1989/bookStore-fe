@@ -20,8 +20,8 @@ interface BookListProps {
 }
 
 const mapStatusCodeToText = (list:  BookListType) => {
-    const orderTypeMap = {0: '未发货', 1: '已发货'}
-    const payTypeMap = {0: '未发货', 1: '已发货'}
+    const orderTypeMap = { 0: '未发货', 1: '已发货', 2: '已收货'}
+    const payTypeMap = { 0: '未发货', 1: '已发货', 2: '已收货'}
     const deliverTypeMap = {0: '未付款', 1: '已付款'}
     return list.map(item => {
         return {
@@ -95,7 +95,7 @@ class BookList extends React.Component<BookListProps, {}> {
                 title: '发货状态',
                 dataIndex: 'delivery_status',
                 render: (_, item: BookItemType) => {
-                    const typeMap = {0: '未发货', 1: '已发货'}
+                    const typeMap = { 0: '未发货', 1: '已发货', 2: '已收货'}
                     return typeMap[item.delivery_status] || '未知';
                 }
             },
