@@ -87,7 +87,7 @@ class BookList extends React.Component<BookListProps, {}> {
                 title: '发货状态',
                 dataIndex: 'delivery_status',
                 render: (_, item: BookItemType) => {
-                    const typeMap = {0: '未发货', 1: '已发货'}
+                    const typeMap = { 0: '未发货', 1: '已发货', 2: '已收货'}
                     return typeMap[item.delivery_status] || '未知';
                 }
             },
