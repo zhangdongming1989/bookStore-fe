@@ -51,7 +51,7 @@ const columns:ColumnProps <StateBookItemDetail>[] = [
     },
     {
         key: 'deliveried_quantity',
-        title: '已配送数量',
+        title: '已分拣数量',
         dataIndex: 'deliveried_quantity'
     },
 ];
