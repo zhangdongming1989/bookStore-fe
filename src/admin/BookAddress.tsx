@@ -110,6 +110,11 @@ class BookAddress extends React.Component<BookAddressProps> {
                 dataIndex: 'order_id',
             },
             {
+                key: 'isbn',
+                title: 'ISBN',
+                dataIndex: 'isbn',
+            },
+            {
                 key: 'order_quantity',
                 title: '数量',
                 dataIndex: 'order_quantity',
@@ -123,6 +128,7 @@ class BookAddress extends React.Component<BookAddressProps> {
                 key: 'actual_price',
                 title: '实洋',
                 dataIndex: 'actual_price',
+                width: 100,
             },
             {
                 key: 'address',
@@ -134,11 +140,13 @@ class BookAddress extends React.Component<BookAddressProps> {
                 key: 'consignee',
                 title: '收货人',
                 dataIndex: 'consignee',
+                width: 100,
             },
             {
                 key: 'post_code',
                 title: '邮编',
                 dataIndex: 'post_code',
+                width: 100,
             },
             {
                 key: 'phone',

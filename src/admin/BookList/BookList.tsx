@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Table, Button } from 'antd';
+import { Table, Button, Modal } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
 import { requestConfirmSent } from '../../redux/admin/actions';
 // import { WrappedFormUtils } from 'antd/lib/form/Form';
 import * as Moment from 'moment';
 import BookListDetailModal from '../BookListDetailModal';
-import { requestBookListDetail } from '../../redux/profile/actions';
+import { requestAddressByOrder, requestBookListDetail } from '../../redux/profile/actions';
 import ExportFile, { filenameCreator } from '../../components/ExportFile';
+import { RootState } from '../../redux/types';
 
 // tslint:disable
 
@@ -17,6 +18,9 @@ interface BookListProps {
     time: Moment.Moment[]
     isFinished: boolean;
     nickname: string;
+    orderAddressMap: {
+        [propsName: string]: StateOrderAddressType;
+    };
 }
 
 const mapStatusCodeToText = (list:  BookListType) => {
@@ -37,6 +41,8 @@ class BookList extends React.Component<BookListProps, {}> {
     state= {
         detailModalVisible: false,
         selectedRecord: null,
+        showAddressModal: false,
+        showAddressOrderId: '',
     }
 
     handleToggleModal = () => {
@@ -56,9 +62,21 @@ class BookList extends React.Component<BookListProps, {}> {
         dispatch(requestConfirmSent(record.order_id, {time, nickname}))
     }
 
+    handleShowAddress = (record: BookItemType) => {
+        const {dispatch} = this.props
+        dispatch(requestAddressByOrder(record.order_id))
+        this.setState({showAddressOrderId: record.order_id})
+        this.handleToggleAddressModal()
+    }
+
+    handleToggleAddressModal = () => {
+        this.setState({showAddressModal: !this.state.showAddressModal})
+    }
+
     render() {
-        const { bookList = []} = this.props;
-        const {selectedRecord, detailModalVisible} = this.state
+        const { bookList = [], orderAddressMap} = this.props;
+        const {selectedRecord, detailModalVisible, showAddressModal, showAddressOrderId} = this.state
+        const addressInfo = orderAddressMap[showAddressOrderId] || {}
         const time = this.props.time as [Moment.Moment, Moment.Moment]
         const columns: ColumnProps<BookItemType>[] = [
             {
@@ -122,6 +140,13 @@ class BookList extends React.Component<BookListProps, {}> {
                             >
                                 订单书目
                             </Button>
+                            <Button
+                                onClick={() => {this.handleShowAddress(record)}}
+                                size="small"
+                                key="address_info"
+                            >
+                                查看收货人信息
+                            </Button>
                             {
                                 Number(delivery_status) === 0 &&
                                 <Button
@@ -155,9 +180,34 @@ class BookList extends React.Component<BookListProps, {}> {
                     filename={filenameCreator('book_list', '','', time)}
                     disabled={!bookList.length}
                 />
+                <Modal
+                    visible={showAddressModal}
+                    title={`订单${addressInfo.order_id}`}
+                    onCancel={this.handleToggleAddressModal}
+                    onOk={this.handleToggleAddressModal}
+                >
+                    <div>
+                        {
+                            addressInfo.consignee ?
+                                <div>
+                                    <div>收货人：{addressInfo.consignee}</div>
+                                    <div>地址：{addressInfo.address}</div>
+                                    <div>电话：{addressInfo.phone}</div>
+                                    <div>邮编: {addressInfo.post_code}</div>
+                                </div> :
+                                <div>正在查询。。。</div>
+                        }
+                    </div>
+                </Modal>
             </div>
         );
     }
 }
 
-export default connect()(BookList);
+const mapStateToProps = (state:RootState) => {
+    return {
+        orderAddressMap: state.profile.orderAddressMap
+    }
+}
+
+export default connect(mapStateToProps)(BookList);
